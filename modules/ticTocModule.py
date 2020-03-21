@@ -9,7 +9,6 @@
 
 from core.baseModule import BaseModule
 from core.message import Message
-from core.simulator import sim
 import time
 
 
@@ -18,12 +17,12 @@ class TicTocModule(BaseModule):
         if self.name == "s1":
             msg = Message("beep")
             self.send(msg, "s1", delay=0)
-            print("[{}][{}] Send message {} to {}".format(sim.sim_time, self.name, msg.text, msg.dest))
+            print("[{}][{}] Send message {} to {}".format(self.sim_time, self.name, msg.text, msg.dest))
 
     def handle_message(self, msg):
         """ On message reception """
         if msg.dest == self.name:
-            print("[{}][{}] Received new message {}".format(sim.sim_time, self.name, msg.text))
+            print("[{}][{}] Received new message {}".format(self.sim_time, self.name, msg.text))
             delay = 1
             if self.name == "s1":
                 m = Message("tic")
@@ -34,7 +33,7 @@ class TicTocModule(BaseModule):
                 dest = "s1"
 
             self.send(m, dest, delay=delay)
-            print("[{}][{}] Send message {} to {} with delay {}".format(sim.sim_time, self.name, m.text, dest, delay))
+            print("[{}][{}] Send message {} to {} with delay {}".format(self.sim_time, self.name, m.text, dest, delay))
 
             time.sleep(1)
 

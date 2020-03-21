@@ -5,3 +5,6 @@ class Event(object):
 
     def __lt__(self, other):
         self.time < other.time
+
+    def __del__(self):
+        del self.msg

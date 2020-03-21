@@ -1,10 +1,12 @@
 import bisect
 from core.baseModule import BaseModule
 from core.event import Event
+from datetime import datetime
 
 
 class Simulator(object):
     def __init__(self):
+        print("New simulation is started at {}".format(datetime.now().strftime("%d-%m-%Y %H:%M:%S:%f")))
         self.sim_time = 0
 
         self.modules = []
@@ -27,9 +29,6 @@ class Simulator(object):
         for module in self.modules:
             new_events += module.notify(e)
 
-        for e in new_events:
-            e.time += self.sim_time
-
         return new_events
 
     def run(self):
@@ -45,11 +44,16 @@ class Simulator(object):
         self.sim_time = next_event.time
         new_events = self.notify_all(next_event)
 
-        del next_event.msg
         del next_event
 
         while new_events:
             bisect.insort_left(self.events, new_events.pop(0))
 
+    def __del__(self):
+        for m in self.modules:
+            del m
 
-sim = Simulator()
+        for e in self.events:
+            del e
+
+        print("Simulation finished at {}".format(datetime.now().strftime("%d-%m-%Y %H:%M:%S:%f")))

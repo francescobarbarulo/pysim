@@ -1,10 +1,12 @@
 from core.event import Event
 from core.message import Message
+from abc import ABC, abstractmethod
 
 
-class BaseModule(object):
+class BaseModule(ABC):
     def __init__(self, name: str):
         self.name = name
+        self.sim_time = 0
         self.events = []
 
         self.initialize()
@@ -23,10 +25,11 @@ class BaseModule(object):
         msg.src = self.name
         msg.dest = dest
 
-        e = Event(msg, delay)
+        e = Event(msg, self.sim_time + delay)
         self.events.append(e)
 
     def notify(self, e: Event):
+        self.sim_time = e.time
         self.handle_message(e.msg)
 
         new_events = []
@@ -35,10 +38,27 @@ class BaseModule(object):
 
         return new_events
 
-    # The next functions have to be implemented by your modules
+    def __del__(self):
+        self.finish()
 
+        for e in self.events:
+            del e
+
+    ''' The next functions must be implemented by your modules '''
+    @abstractmethod
     def initialize(self):
+        """ Module initialization must contain at least one send() call """
         pass
 
+    @abstractmethod
     def handle_message(self, msg: Message):
+        """
+        It is called whenever the module receives a message.
+        Here you can consume the message
+        """
+        pass
+
+    ''' optional '''
+    def finish(self):
+        """ You can use it for deleting data structures used by your module """
         pass

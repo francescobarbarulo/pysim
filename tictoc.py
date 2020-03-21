@@ -5,10 +5,19 @@
 """
 
 from modules.ticTocModule import TicTocModule
-from core.simulator import sim
+from core.simulator import Simulator
 
 
 def main():
+    sim = Simulator()
+    ''' 
+        Add modules here:
+        - in a single statement like in the example;
+        - in more statements:
+            sim.add_module(TicTocModule("s1"))
+            sim.add_module(TicTocModule("s2"))
+
+    '''
     sim.add_module(TicTocModule("s1"), TicTocModule("s2"))
 
     sim.run()
