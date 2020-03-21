@@ -5,18 +5,30 @@ from core.event import Event
 
 class Simulator(object):
     def __init__(self):
-        self.modules = []
         self.sim_time = 0
+
+        self.modules = []
         self.events = []
 
-    def add_module(self, m: BaseModule):
-        self.modules.append(m)
+    def is_valid(self, m: BaseModule):
+        names = [m.name for m in self.modules]
+        return m.name not in names
+
+    def add_module(self, *args):
+        for m in args:
+            if isinstance(m, BaseModule) and self.is_valid(m):
+                self.modules.append(m)
+            else:
+                raise Exception("module {0} has not been added because it already exists".format(m.name))
 
     def notify_all(self, e: Event):
         new_events = []
 
         for module in self.modules:
             new_events += module.notify(e)
+
+        for e in new_events:
+            e.time += self.sim_time
 
         return new_events
 

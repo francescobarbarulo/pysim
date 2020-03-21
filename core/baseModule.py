@@ -1,4 +1,3 @@
-from core.simulator import sim
 from core.event import Event
 from core.message import Message
 
@@ -12,10 +11,10 @@ class BaseModule(object):
 
     def load(self):
         events = []
-        for e in self.events:
-            events.append(e)
 
-        self.events.clear()
+        while self.events:
+            events.append(self.events.pop(0))
+
         return events
 
     def send(self, msg: Message, dest: str, **kwargs):
@@ -24,16 +23,15 @@ class BaseModule(object):
         msg.src = self.name
         msg.dest = dest
 
-        e = Event(msg, sim.sim_time + delay)
+        e = Event(msg, delay)
         self.events.append(e)
 
     def notify(self, e: Event):
         self.handle_message(e.msg)
 
         new_events = []
-        for e in self.events:
-            new_events.append(e)
-        self.events.clear()
+        while self.events:
+            new_events.append(self.events.pop(0))
 
         return new_events
 
