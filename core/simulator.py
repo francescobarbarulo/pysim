@@ -9,30 +9,33 @@ class Simulator(object):
         print("New simulation is started at {}".format(datetime.now().strftime("%d-%m-%Y %H:%M:%S:%f")))
         self.sim_time = 0
 
-        self.modules = []
+        self.modules = {}
         self.events = []
 
     def is_valid(self, m: BaseModule):
-        names = [m.name for m in self.modules]
-        return m.name not in names
+        return m.name not in self.modules.keys()
 
     def add_module(self, *args):
         for m in args:
             if isinstance(m, BaseModule) and self.is_valid(m):
-                self.modules.append(m)
+                self.modules.update({m.name: m})
             else:
-                raise Exception("module {0} has not been added because it already exists".format(m.name))
+                raise Exception("Duplicated module with same name {}".format(m.name))
 
     def notify_all(self, e: Event):
         new_events = []
+        targets = [self.modules.get(e.msg.dest)] if not e.msg.broadcast else [m for name, m in self.modules.items() if name != e.msg.src]
 
-        for module in self.modules:
+        if not targets:
+            raise Exception("No module named {}".format(e.msg.dest))
+
+        for module in targets:
             new_events += module.notify(e)
 
         return new_events
 
     def run(self):
-        for module in self.modules:
+        for module in self.modules.values():
             self.events += module.load()
 
         while self.events:

@@ -1,9 +1,8 @@
 from core.event import Event
 from core.message import Message
-from abc import ABC, abstractmethod
 
 
-class BaseModule(ABC):
+class BaseModule(object):
     def __init__(self, name: str):
         self.name = name
         self.sim_time = 0
@@ -19,14 +18,19 @@ class BaseModule(ABC):
 
         return events
 
-    def send(self, msg: Message, dest: str, **kwargs):
-        delay = kwargs['delay'] if 'delay' in kwargs else 0
-
+    def send(self, msg: Message, dest: str, delay=0):
         msg.src = self.name
         msg.dest = dest
 
         e = Event(msg, self.sim_time + delay)
         self.events.append(e)
+
+    def schedule_at(self, msg: Message, delay=0):
+        self.send(msg, self.name, delay)
+
+    def broadcast(self, msg: Message, delay=0):
+        msg.broadcast = True
+        self.send(msg, None, delay)
 
     def notify(self, e: Event):
         self.sim_time = e.time
@@ -44,13 +48,13 @@ class BaseModule(ABC):
         for e in self.events:
             del e
 
-    ''' The next functions must be implemented by your modules '''
-    @abstractmethod
     def initialize(self):
-        """ Module initialization must contain at least one send() call """
+        """
+        The module that starts the interaction must implement this method
+        with at least one send() call
+        """
         pass
 
-    @abstractmethod
     def handle_message(self, msg: Message):
         """
         It is called whenever the module receives a message.
@@ -58,7 +62,6 @@ class BaseModule(ABC):
         """
         pass
 
-    ''' optional '''
     def finish(self):
         """ You can use it for deleting data structures used by your module """
         pass
