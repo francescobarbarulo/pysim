@@ -1,8 +1,12 @@
-from core import sim
+from core.simulator import sim
 
 
 class Message(object):
-    def __init__(self, text, dest):
+    def __init__(self, text):
         self.text = text
-        self.dest = dest
-        self.created_on = sim.sim.sim_time
+        self.src = None
+        self.dest = None
+        self.created_on = sim.sim_time
+
+    def is_self_message(self):
+        return self.src == self.dest

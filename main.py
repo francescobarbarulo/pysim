@@ -1,16 +1,14 @@
-from tictoc import TicTocModule
-from core.simulator import Simulator
-from core import sim
+from examples.simpleModule import SimpleModule
+from examples.tictoc import TicTocModule
+from core.simulator import sim
 
 
 def main():
 
-    sim.sim = Simulator()
+    sim.add_module(TicTocModule("s1"))
+    sim.add_module(TicTocModule("s2"))
 
-    sim.sim.add_module(TicTocModule("s1"))
-    sim.sim.add_module(TicTocModule("s2"))
-
-    sim.sim.run()
+    sim.run()
 
 
 if __name__ == '__main__':

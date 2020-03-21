@@ -1,19 +1,22 @@
+import bisect
+from core.baseModule import BaseModule
+from core.event import Event
+
+
 class Simulator(object):
     def __init__(self):
         self.modules = []
         self.sim_time = 0
         self.events = []
 
-    def add_module(self, m):
+    def add_module(self, m: BaseModule):
         self.modules.append(m)
 
-    def notify_all(self, e):
-        print("notify_all")
+    def notify_all(self, e: Event):
         new_events = []
 
         for module in self.modules:
-            module_events = module.notify(e)
-            new_events += module_events
+            new_events += module.notify(e)
 
         return new_events
 
@@ -25,11 +28,16 @@ class Simulator(object):
             self.forward()
 
     def forward(self):
-        print("forward")
         next_event = self.events.pop(0)
+
         self.sim_time = next_event.time
         new_events = self.notify_all(next_event)
 
+        del next_event.msg
         del next_event
 
-        self.events += new_events
+        while new_events:
+            bisect.insort_left(self.events, new_events.pop(0))
+
+
+sim = Simulator()

@@ -1,10 +1,10 @@
-from core.sim import *
+from core.simulator import sim
 from core.event import Event
-from core import sim
+from core.message import Message
 
 
 class BaseModule(object):
-    def __init__(self, name):
+    def __init__(self, name: str):
         self.name = name
         self.events = []
 
@@ -18,14 +18,16 @@ class BaseModule(object):
         self.events.clear()
         return events
 
-    def send(self, msg, **kwargs):
+    def send(self, msg: Message, dest: str, **kwargs):
         delay = kwargs['delay'] if 'delay' in kwargs else 0
 
-        e = Event(msg, sim.sim.sim_time + delay)
+        msg.src = self.name
+        msg.dest = dest
+
+        e = Event(msg, sim.sim_time + delay)
         self.events.append(e)
 
-    def notify(self, e):
-        print("notify")
+    def notify(self, e: Event):
         self.handle_message(e.msg)
 
         new_events = []
@@ -40,5 +42,5 @@ class BaseModule(object):
     def initialize(self):
         pass
 
-    def handle_message(self, msg):
+    def handle_message(self, msg: Message):
         pass
