@@ -53,7 +53,7 @@ class Simulator(object):
             bisect.insort_left(self.events, new_events.pop(0))
 
     def __del__(self):
-        for m in self.modules:
+        for m in self.modules.values():
             del m
 
         for e in self.events:
