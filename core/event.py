@@ -10,7 +10,10 @@ class Event(object):
         return self.__time
 
     def __lt__(self, other):
-        self.__time < other.get_time()
+        return self.__time < other.__time
 
     def __del__(self):
         del self.__msg
+
+    def __str__(self):
+        return "msg:{} time:{}".format(self.__msg, self.__time)
