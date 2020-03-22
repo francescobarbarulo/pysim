@@ -1,30 +1,31 @@
 # pysim
 
-pysim is an event-driven python simulator for interactions between modules. 
-Everyone can implement new modules for new simulations.
+pysim is an event-driven python simulator. It was born for fun based on the OMNET++ concept. One of the advantages is the lack of network definition. Of course it actually missis all the statistic functionalities, but they will be available soon.
 
-Modules interacts among them through messages which are instances of class `Message`.
+## Repo
 
-## Message class
-You can create a new message by passing the _text_ to the constructor as follows:
+The repository is organized in this way:
+- _core_ contains all the essentail code for running the simulator (it should not be touched);
+- _examples_ contains some demo to show how the simulator works and all its features;
+- in the repo you can find the three _main_ programs related to the three examples.
+
+Try these example just downloading the repo, entering the repo and issuing:
 ```
-message = Message("hello world")
+python3 echo_reply.py
 ```
 
 ## BaseModule module
 
-The `BaseModule` module is the base class from which all the modules must be derived. New modules can use the method
-`send()` to send messages to other modules.
+The `BaseModule` is the base class that represents a module from which all the modules must be derived. It can be considered as an interface.
+Indeed, if you want to create your own module, you can override three methods exposed by this interface:
 
-For the `send()` method, the following parameters must be specified:
-- _message_: instance of the class `Message`;
-- _destination_: name of the destination module;
-- _delay_: optional parameter that specifies when the message must be sent in relation with the simulation time.
+- `initialize()` allows to begin the interaction. At least one of the modules registered to the system must send the first message. You can do this in this function.
+- `handle_message(msg)` is called whenever the module receives a message.
+- `finish()` is called at the destruction of the module and here you can destroy the module's data structures.
 
-## Implement new module
+If you want to provide further data structures to your module you need to implement also its constructor which must invoke the base class constructor.
 
-A new module must be derived by the base class `modules.BaseModule` and *must implement only* the following methods:
-- `initialize()` is called by the `modules.BaseModule` constructor and must call send() function at least one time
-in order to start the simulation.
-- `handle_message(msg)` is called whenever a module receive a message. Since all messages are broadcast to all modules involved
-in the simulation, you must remember to check the message destination to know if the message is addressed to a specific module.
+Moreover `BaseModule` provides some methods for sending messages:
+- `send(msg, dest, delay)` is the standard method for sending a message `msg` to module with name `dest` with a delay equal to `delay` (default 0).
+- `schedule_at(msg, delay)` allows a module to send the message to itself.
+- `broadcast(msg, delay)` allows a module to send the message to all the modules of the system but itself.
