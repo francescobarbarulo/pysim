@@ -10,8 +10,8 @@ class SampleModule(BaseModule):
         super(SampleModule, self).__init__(name)
 
     def initialize(self):
-        # initialize your data structures, for instance
-        self.queue.append(object)
+        # initialize your data structures also here!
+        self.queue = []
         # if you want the module to start you need to schedule a message
         # so that it will trigger the handle_message function
         msg = Message()
@@ -22,6 +22,5 @@ class SampleModule(BaseModule):
         print("New message received\ntext: {}\nfrom: {}".format(msg.get_text(), msg.get_source()))
 
     def finish(self):
-        # destroy all data structures, for instance
-        for o in self.queue:
-            del o
+        # destroy all used data structures
+        pass

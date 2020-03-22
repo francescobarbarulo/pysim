@@ -9,7 +9,7 @@ def main():
     sim = Simulator()
 
     # register your module
-    sim.register(SampleModule("sample"))
+    sim.register_module(SampleModule("sample"))
 
     # run the simulator
     sim.run()
