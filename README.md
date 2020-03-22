@@ -29,20 +29,29 @@ Moreover `BaseModule` provides some methods for sending messages:
 - `send(msg, dest, delay)` is the standard method for sending a message `msg` to module with name `dest` with a delay equal to `delay` (default 0).
 - `schedule_at(msg, delay)` allows a module to send the message to itself.
 
-Here you can find how your module should be:
+### Build your own module
+
+Your own module should look like the following:
 ```python
+# examples/Sample/sampleModule.py
+
 from core.modules.baseModule import BaseModule
 from core.message import Message
 
 class SampleModule(BaseModule):
     def __init__(self, name):
-        super(SampleModule, self).__init__(name)
         # here data structures can be defined, for instance
         self.queue = []
+        # the call to the base class constructor must be the last
+        super(SampleModule, self).__init__(name)
 
     def initialize(self):
         # initialize your data structures, for instance
         self.queue.append(object)
+        # if you want the module to start you need to schedule a message
+        # so that it will be trigger the handle_message function
+        msg = Message()
+        self.schedule_at(msg, delay=0)
 
     def handle_message(self, msg):
         # consume the message
@@ -52,4 +61,28 @@ class SampleModule(BaseModule):
         # destroy all data structures, for instance
         for o in self.queue:
             del o
+```
+
+Then, for creating a new simulation script you need to create a new file, for instance `sample.py`, in the main directory.
+
+```python
+# sample.py
+
+from examples.Sample.sampleModule import SampleModule
+from core.simulator import Simulator
+
+
+def main():
+    # create a new simulator
+    sim = Simulator()
+    
+    # register your module
+    sim.register(SampleModule("sample"))
+    
+    # run the simulator
+    sim.run()
+
+
+if __name__ == '__main__':
+    main()
 ```
