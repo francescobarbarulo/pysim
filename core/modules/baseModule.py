@@ -1,14 +1,13 @@
 from core.event import Event
-from core.message import Message
+from core.signal import Signal
 
 
 class BaseModule(object):
-    def __init__(self, name: str):
+    def __init__(self, name):
         self.__name = name
         self.__sim_time = 0
         self.__events = []
-
-        self.initialize()
+        self.__signals = {}
 
     def get_name(self):
         return self.__name
@@ -17,6 +16,8 @@ class BaseModule(object):
         return self.__sim_time
 
     def load(self):
+        self.initialize()
+
         events = []
 
         while self.__events:
@@ -24,17 +25,17 @@ class BaseModule(object):
 
         return events
 
-    def send(self, msg: Message, dest: str, delay=0):
+    def send(self, msg, dest, delay=0):
         msg.set_source(self.__name)
         msg.set_dest(dest)
 
         e = Event(msg, self.__sim_time + delay)
         self.__events.append(e)
 
-    def schedule_at(self, msg: Message, delay=0):
+    def schedule_at(self, msg, delay=0):
         self.send(msg, self.__name, delay)
 
-    def notify(self, e: Event):
+    def notify(self, e):
         self.__sim_time = e.get_time()
         self.handle_message(e.get_message())
 
@@ -43,6 +44,29 @@ class BaseModule(object):
             new_events.append(self.__events.pop(0))
 
         return new_events
+
+    def register_signal(self, name, signal_type):
+        if name not in self.__signals.keys():
+            self.__signals.update({name: Signal(name, signal_type)})
+        else:
+            raise Exception("Duplicated signals with name {}".format(name))
+
+    def get_signals(self):
+        return self.__signals
+
+    def emit(self, signal_name, value):
+        signal = self.__signals.get(signal_name)
+
+        if signal is None:
+            raise Exception("Signal {} not registered".format(signal_name))
+
+        signal.emit(value)
+
+    def reset(self):
+        self.__sim_time = 0
+        self.__events.clear()
+        for s in self.__signals.values():
+            s.reset()
 
     def __del__(self):
         self.finish()
@@ -57,7 +81,7 @@ class BaseModule(object):
         """
         pass
 
-    def handle_message(self, msg: Message):
+    def handle_message(self, msg):
         """
         It is called whenever the module receives a message.
         Here you can consume the message
