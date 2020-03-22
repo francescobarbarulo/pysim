@@ -14,11 +14,11 @@ def main():
         Add examples here:
         - in a single statement like in the example;
         - in more statements:
-            sim.add_module(SimpleModule("s1"))
-            sim.add_module(SimpleModule("s2"))
+            sim.register(SimpleModule("s1"))
+            sim.register(SimpleModule("s2"))
     
     '''
-    sim.add_module(EchoModule("echo"), ReplyModule("reply"))
+    sim.register(EchoModule("echo"), ReplyModule("reply"))
 
     sim.run()
 

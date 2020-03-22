@@ -15,11 +15,11 @@ def main():
         Add examples here:
         - in a single statement like in the example;
         - in more statements:
-            sim.add_module(TicTocModule("s1"))
-            sim.add_module(TicTocModule("s2"))
+            sim.register(TicTocModule("s1"))
+            sim.register(TicTocModule("s2"))
 
     '''
-    sim.add_module(TicModule("tic"), TocModule("toc"))
+    sim.register(TicModule("tic"), TocModule("toc"))
 
     sim.run()
 

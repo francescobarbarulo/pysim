@@ -28,10 +28,6 @@ class BaseModule(object):
     def schedule_at(self, msg: Message, delay=0):
         self.send(msg, self.name, delay)
 
-    def broadcast(self, msg: Message, delay=0):
-        msg.broadcast = True
-        self.send(msg, None, delay)
-
     def notify(self, e: Event):
         self.sim_time = e.time
         self.handle_message(e.msg)

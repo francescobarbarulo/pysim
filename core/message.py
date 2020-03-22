@@ -3,7 +3,6 @@ class Message(object):
         self.text = text
         self.src = None
         self.dest = None
-        self.broadcast = False
 
     def is_self_message(self):
         return self.src == self.dest

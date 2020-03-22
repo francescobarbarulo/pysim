@@ -1,5 +1,5 @@
 import bisect
-from core.baseModule import BaseModule
+from core.modules.baseModule import BaseModule
 from core.event import Event
 from datetime import datetime
 
@@ -15,24 +15,20 @@ class Simulator(object):
     def is_valid(self, m: BaseModule):
         return m.name not in self.modules.keys()
 
-    def add_module(self, *args):
+    def register(self, *args):
         for m in args:
             if isinstance(m, BaseModule) and self.is_valid(m):
                 self.modules.update({m.name: m})
             else:
                 raise Exception("Duplicated module with same name {}".format(m.name))
 
-    def notify_all(self, e: Event):
-        new_events = []
-        targets = [self.modules.get(e.msg.dest)] if not e.msg.broadcast else [m for name, m in self.modules.items() if name != e.msg.src]
+    def notify(self, e: Event):
+        target = self.modules.get(e.msg.dest)
 
-        if not targets:
+        if not target:
             raise Exception("No module named {}".format(e.msg.dest))
 
-        for module in targets:
-            new_events += module.notify(e)
-
-        return new_events
+        return target.notify(e)
 
     def run(self):
         for module in self.modules.values():
@@ -45,7 +41,7 @@ class Simulator(object):
         next_event = self.events.pop(0)
 
         self.sim_time = next_event.time
-        new_events = self.notify_all(next_event)
+        new_events = self.notify(next_event)
 
         del next_event
 

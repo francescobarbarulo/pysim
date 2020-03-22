@@ -7,7 +7,7 @@
     Do not implement other methods than these
 """
 
-from core.baseModule import BaseModule
+from core.modules.baseModule import BaseModule
 from core.message import Message
 
 
