@@ -4,44 +4,50 @@ from core.message import Message
 
 class BaseModule(object):
     def __init__(self, name: str):
-        self.name = name
-        self.sim_time = 0
-        self.events = []
+        self.__name = name
+        self.__sim_time = 0
+        self.__events = []
 
         self.initialize()
+
+    def get_name(self):
+        return self.__name
+
+    def sim_time(self):
+        return self.__sim_time
 
     def load(self):
         events = []
 
-        while self.events:
-            events.append(self.events.pop(0))
+        while self.__events:
+            events.append(self.__events.pop(0))
 
         return events
 
     def send(self, msg: Message, dest: str, delay=0):
-        msg.src = self.name
-        msg.dest = dest
+        msg.set_source(self.__name)
+        msg.set_dest(dest)
 
-        e = Event(msg, self.sim_time + delay)
-        self.events.append(e)
+        e = Event(msg, self.__sim_time + delay)
+        self.__events.append(e)
 
     def schedule_at(self, msg: Message, delay=0):
-        self.send(msg, self.name, delay)
+        self.send(msg, self.__name, delay)
 
     def notify(self, e: Event):
-        self.sim_time = e.time
-        self.handle_message(e.msg)
+        self.__sim_time = e.get_time()
+        self.handle_message(e.get_message())
 
         new_events = []
-        while self.events:
-            new_events.append(self.events.pop(0))
+        while self.__events:
+            new_events.append(self.__events.pop(0))
 
         return new_events
 
     def __del__(self):
         self.finish()
 
-        for e in self.events:
+        for e in self.__events:
             del e
 
     def initialize(self):

@@ -19,7 +19,7 @@ class SampleModule(BaseModule):
 
     def handle_message(self, msg):
         # consume the message
-        print("New message received\ntext: {}\nfrom: {}".format(msg.text, msg.src))
+        print("New message received\ntext: {}\nfrom: {}".format(msg.get_text(), msg.get_source()))
 
     def finish(self):
         # destroy all data structures, for instance

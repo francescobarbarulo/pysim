@@ -7,26 +7,26 @@ from datetime import datetime
 class Simulator(object):
     def __init__(self):
         print("New simulation is started at {}".format(datetime.now().strftime("%d-%m-%Y %H:%M:%S:%f")))
-        self.sim_time = 0
+        self.__sim_time = 0
 
         self.modules = {}
         self.events = []
 
     def is_valid(self, m: BaseModule):
-        return m.name not in self.modules.keys()
+        return m.get_name() not in self.modules.keys()
 
     def register(self, *args):
         for m in args:
             if isinstance(m, BaseModule) and self.is_valid(m):
-                self.modules.update({m.name: m})
+                self.modules.update({m.get_name(): m})
             else:
-                raise Exception("Duplicated module with same name {}".format(m.name))
+                raise Exception("Duplicated module with same name {}".format(m.get_name()))
 
     def notify(self, e: Event):
-        target = self.modules.get(e.msg.dest)
+        target = self.modules.get(e.get_message().get_dest())
 
         if not target:
-            raise Exception("No module named {}".format(e.msg.dest))
+            raise Exception("No module named {}".format(e.get_message().get_dest()))
 
         return target.notify(e)
 
@@ -40,7 +40,7 @@ class Simulator(object):
     def forward(self):
         next_event = self.events.pop(0)
 
-        self.sim_time = next_event.time
+        self.__sim_time = next_event.get_time()
         new_events = self.notify(next_event)
 
         del next_event

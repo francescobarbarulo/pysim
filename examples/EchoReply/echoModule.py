@@ -6,7 +6,7 @@ class EchoModule(BaseModule):
     def initialize(self):
         msg = Message()
         self.send(msg, "reply", delay=1)
-        print("[{}][{}] Send message {} to {}".format(self.sim_time, self.name, msg.text, msg.dest))
+        print("[{}][{}] Send message {} to {}".format(self.sim_time(), self.get_name(), msg.get_text(), msg.get_dest()))
 
     def handle_message(self, msg):
-        print("[{}][{}] Received new message {} from {}".format(self.sim_time, self.name, msg.text, msg.src))
+        print("[{}][{}] Received new message {} from {}".format(self.sim_time(), self.get_name(), msg.get_text(), msg.get_source()))
