@@ -1,11 +1,11 @@
 # pysim
 
-pysim is an event-driven python simulator. It was born for fun based on the OMNET++ concept. One of the advantages is that  the network definition is no more needed. Of course it actually missis all the statistic functionalities, but they will be available soon.
+pysim is an event-driven python simulator. It was born for fun based on the OMNET++ concept. One of the advantages is that  the network definition is no more needed. Of course it actually misses all the statistic functionalities, but they will be available soon.
 
 ## Repo
 
 The repository is organized in this way:
-- _core_ contains all the essential data structures for running the simulator (it should not be touched excpet if you want to improve it, in this case you are welcome);
+- _core_ contains all the essential data structures for running the simulator (it should not be touched except if you want to improve it, in this case you are welcome);
 - _examples_ contains some demo to show how the simulator works and some of its features;
 - in the repo you can find the two _main_ programs related to the two examples.
 
@@ -55,7 +55,7 @@ class SampleModule(BaseModule):
 
     def handle_message(self, msg):
         # consume the message
-        print("New message received\ntext: {}\nfrom: {}".format(msg.text, msg.src))
+        print("New message received\ntext: {}\nfrom: {}".format(msg.get_text(), msg.get_source()))
 
     def finish(self):
         # destroy all data structures, for instance
