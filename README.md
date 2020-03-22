@@ -1,13 +1,13 @@
 # pysim
 
-pysim is an event-driven python simulator. It was born for fun based on the OMNET++ concept. One of the advantages is the lack of network definition. Of course it actually missis all the statistic functionalities, but they will be available soon.
+pysim is an event-driven python simulator. It was born for fun based on the OMNET++ concept. One of the advantages is that  the network definition is no more needed. Of course it actually missis all the statistic functionalities, but they will be available soon.
 
 ## Repo
 
 The repository is organized in this way:
-- _core_ contains all the essentail code for running the simulator (it should not be touched);
-- _examples_ contains some demo to show how the simulator works and all its features;
-- in the repo you can find the three _main_ programs related to the three examples.
+- _core_ contains all the essentail data structures for running the simulator (it should not be touched excpet if you want to improve it, in this case you are welcome);
+- _examples_ contains some demo to show how the simulator works and some of its features;
+- in the repo you can find the two _main_ programs related to the two examples.
 
 Try these example just downloading the repo, entering the repo and issuing:
 ```
@@ -28,4 +28,3 @@ If you want to provide further data structures to your module you need to implem
 Moreover `BaseModule` provides some methods for sending messages:
 - `send(msg, dest, delay)` is the standard method for sending a message `msg` to module with name `dest` with a delay equal to `delay` (default 0).
 - `schedule_at(msg, delay)` allows a module to send the message to itself.
-- `broadcast(msg, delay)` allows a module to send the message to all the modules of the system but itself.
