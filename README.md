@@ -26,7 +26,7 @@ repeat = 1
 ```
 
 - `sim_time_limit` specifies the duration of the simulation.
-- `reapeat` specifies the number of repetitions.
+- `repeat` specifies the number of repetitions.
 
 ## BaseModule module
 
