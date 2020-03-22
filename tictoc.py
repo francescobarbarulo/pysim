@@ -1,7 +1,8 @@
 """
     *** TicToc example ***
-    This simulation implements a tic-toc interaction between two examples.
-    Module s1 starts the interaction with s2 and they continue forever.
+    This simulation implements a tic-toc interaction between two modules.
+    Module "tic" starts the interaction with "toc" and they continue forever.
+    Stop it issuing Ctrl+C
 """
 
 from examples.TicToc.ticModule import TicModule
@@ -11,14 +12,7 @@ from core.simulator import Simulator
 
 def main():
     sim = Simulator()
-    ''' 
-        Add examples here:
-        - in a single statement like in the example;
-        - in more statements:
-            sim.register(TicTocModule("s1"))
-            sim.register(TicTocModule("s2"))
 
-    '''
     sim.register(TicModule("tic"), TocModule("toc"))
 
     sim.run()
