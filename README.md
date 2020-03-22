@@ -5,7 +5,7 @@ pysim is an event-driven python simulator. It was born for fun based on the OMNE
 ## Repo
 
 The repository is organized in this way:
-- _core_ contains all the essentail data structures for running the simulator (it should not be touched excpet if you want to improve it, in this case you are welcome);
+- _core_ contains all the essential data structures for running the simulator (it should not be touched excpet if you want to improve it, in this case you are welcome);
 - _examples_ contains some demo to show how the simulator works and some of its features;
 - in the repo you can find the two _main_ programs related to the two examples.
 
@@ -49,7 +49,7 @@ class SampleModule(BaseModule):
         # initialize your data structures, for instance
         self.queue.append(object)
         # if you want the module to start you need to schedule a message
-        # so that it will be trigger the handle_message function
+        # so that it will trigger the handle_message function
         msg = Message()
         self.schedule_at(msg, delay=0)
 
@@ -63,22 +63,24 @@ class SampleModule(BaseModule):
             del o
 ```
 
-Then, for creating a new simulation script you need to create a new file, for instance `sample.py`, in the main directory.
+For creating a new simulation script you need to create a new file, for instance `sample.py`, in the main directory.
 
 ```python
 # sample.py
 
-from examples.Sample.sampleModule import SampleModule
 from core.simulator import Simulator
+
+# import your own modules, for instance
+from examples.Sample.sampleModule import SampleModule
 
 
 def main():
     # create a new simulator
     sim = Simulator()
-    
+
     # register your module
     sim.register(SampleModule("sample"))
-    
+
     # run the simulator
     sim.run()
 
@@ -86,3 +88,29 @@ def main():
 if __name__ == '__main__':
     main()
 ```
+
+Finally, let's launch the simulation by issuing:
+```
+python3 sample.py
+```
+
+The outcome should look like:
+```
+New simulation is started at 22-03-2020 11:10:30:380067
+New message received
+text: hello
+from: sample
+Simulation finished at 22-03-2020 11:10:30:380232
+```
+
+## Messages
+
+Modules interacts each other by means of messages. `Message` is a data structure that keeps:
+- _text_ of the message;
+- _src_ represents the sender of the message;
+- _dest_ represent the receiver of the message.
+
+Furthermore it offers the method `is_self_message()` to let you know if the message has been scheduled through the `schedule_at` function.
+
+## Collaborate
+You are welcome for improving the pysim!
