@@ -28,3 +28,28 @@ If you want to provide further data structures to your module you need to implem
 Moreover `BaseModule` provides some methods for sending messages:
 - `send(msg, dest, delay)` is the standard method for sending a message `msg` to module with name `dest` with a delay equal to `delay` (default 0).
 - `schedule_at(msg, delay)` allows a module to send the message to itself.
+
+Here you can find how your module should be:
+```python
+from core.modules.baseModule import BaseModule
+from core.message import Message
+
+class SampleModule(BaseModule):
+    def __init__(self, name):
+        super(SampleModule, self).__init__(name)
+        # here data structures can be defined, for instance
+        self.queue = []
+
+    def initialize(self):
+        # initialize your data structures, for instance
+        self.queue.append(object)
+
+    def handle_message(self, msg):
+        # consume the message
+        print("New message received\ntext: {}\nfrom: {}".format(msg.text, msg.src))
+
+    def finish(self):
+        # destroy all data structures, for instance
+        for o in self.queue:
+            del o
+```
