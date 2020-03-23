@@ -44,6 +44,47 @@ Moreover `BaseModule` provides some methods for sending messages:
 - `send(msg, dest, delay)` is the standard method for sending a message `msg` to module with name `dest` with a delay equal to `delay` (default 0).
 - `schedule_at(msg, delay)` allows a module to send the message to itself.
 
+## Messages
+
+Modules interacts each other by means of messages. `Message` is a data structure that keeps:
+- _text_ of the message;
+- _src_ represents the sender of the message;
+- _dest_ represent the receiver of the message.
+
+Furthermore it offers the method `is_self_message()` to let you know if the message has been scheduled through the `schedule_at` function.
+
+The `Message` class can be derived in order to create your custom messages. Be careful to not override methods of the base class.
+
+## Signals and Statistics
+
+Signals are useful for exposing statistical properties of the model. Signals are identified by a _name_ and are emitted by modules. 
+In order to emit a signal you need to register it first in the constructor of the associated module. At the registration you need to assign the name, which must be unique, and the type of statistic that you want to collect (only mean available at this moment) like in the following example:
+
+```python
+self.register_signal("response_time", "mean")
+```
+
+In order to emit a signal you can call the function specifying the _name_ of the signal and the _value_ as follows:
+
+```python
+self.emit("response_time", 1.23456789)
+```
+
+At the moment, all the statistics are printed at the end of each repetition.
+
+## Generating random variates
+
+pysim gives the possibility to obtain streams of non-uniformly distributed random numbers from various distributions.
+The simulation library supports the following distributions:
+
+Distribution | Description
+--- | ---
+intuniform(a, b) | uniform distribution in the range \[a,b\]
+exponential(mean) | exponential distribution with the given mean
+lognormal(mean, variance) | normal distribution with the given mean and variance
+
+You can call these distributions on the class `PRNG`.
+
 ### Build your own module
 
 Your own module should look like the following:
@@ -72,14 +113,16 @@ class SampleModule(BaseModule):
     def handle_message(self, msg):
         # consume the message
         print("New message received\ntext: {}\nfrom: {}".format(msg.get_text(), msg.get_source()))
+        self.queue.append(msg)
 
     def finish(self):
         # destroy all used data structures
+        self.queue.clear()
         pass
 
 ```
 
-For creating a new simulation script you need to create a new file, for instance `sample.py`, in the main directory.
+For creating a new simulation script you need to create a new file, for instance `sample.py`, in the main directory. Then you have to create a new `Simulator` instance to which you can register the modules.
 
 ```python
 # sample.py
@@ -118,17 +161,6 @@ text: hello
 from: sample
 Simulation finished at 22-03-2020 11:10:30:380232
 ```
-
-## Messages
-
-Modules interacts each other by means of messages. `Message` is a data structure that keeps:
-- _text_ of the message;
-- _src_ represents the sender of the message;
-- _dest_ represent the receiver of the message.
-
-Furthermore it offers the method `is_self_message()` to let you know if the message has been scheduled through the `schedule_at` function.
-
-The `Message` class can be derived in order to create your custom messages. Be careful to not override methods of the base class.
 
 ## Collaborate
 You are welcome for improving the pysim!
