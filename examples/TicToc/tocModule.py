@@ -11,5 +11,3 @@ class TocModule(BaseModule):
         self.send(m, msg.get_source(), delay=1)
         print("[{}][{}] Send message {} to {}".format(self.sim_time(), self.get_name(), m.get_text(), msg.get_source()))
 
-        time.sleep(1)
-

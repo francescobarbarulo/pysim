@@ -13,7 +13,7 @@ from core.simulator import Simulator
 def main():
     sim = Simulator()
 
-    sim.register(TicModule("tic"), TocModule("toc"))
+    sim.register_module(TicModule("tic"), TocModule("toc"))
 
     sim.run()
 

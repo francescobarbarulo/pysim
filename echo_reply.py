@@ -11,7 +11,7 @@ from core.simulator import Simulator
 def main():
     sim = Simulator()
 
-    sim.register(EchoModule("echo"), ReplyModule("reply"))
+    sim.register_module(EchoModule("echo"), ReplyModule("reply"))
 
     sim.run()
 

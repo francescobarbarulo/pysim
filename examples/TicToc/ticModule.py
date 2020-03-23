@@ -20,5 +20,3 @@ class TicModule(BaseModule):
         self.send(m, dest, delay=1)
         print("[{}][{}] Send message {} to {}".format(self.sim_time(), self.get_name(), m.get_text(), dest))
 
-        time.sleep(1)
-
