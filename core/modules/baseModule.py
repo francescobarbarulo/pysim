@@ -8,6 +8,8 @@ class BaseModule(object):
     def __init__(self, name):
         self.__name = name
         self.__sim_time = 0
+        self._warm_up_period = 0
+
         self.__events = []
         self.__signals = {}
 
@@ -65,7 +67,8 @@ class BaseModule(object):
         if signal is None:
             raise Exception("Signal {} not registered".format(signal_name))
 
-        signal.emit(value)
+        if self.__sim_time > self._warm_up_period:
+            signal.emit(self.__sim_time, value)
 
     def collect_signals(self):
         for signal in self.__signals.values():
