@@ -53,12 +53,13 @@ Your own module should look like the following:
 from core.modules.baseModule import BaseModule
 from core.message import Message
 
+
 class SampleModule(BaseModule):
     def __init__(self, name):
+        # the call to the base class constructor must be the first
+        super(SampleModule, self).__init__(name)
         # here data structures can be defined, for instance
         self.queue = []
-        # the call to the base class constructor must be the last
-        super(SampleModule, self).__init__(name)
 
     def initialize(self):
         # initialize your data structures also here!
@@ -75,6 +76,7 @@ class SampleModule(BaseModule):
     def finish(self):
         # destroy all used data structures
         pass
+
 ```
 
 For creating a new simulation script you need to create a new file, for instance `sample.py`, in the main directory.
