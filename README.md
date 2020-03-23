@@ -64,6 +64,12 @@ In order to emit a signal you need to register it first in the constructor of th
 self.register_signal("response_time", "mean")
 ```
 
+In order to emit a signal you can call the function specifying the _name_ of the signal and the _value_ as follows:
+
+```python
+self.emit("response_time", 1.23456789)
+```
+
 At the moment, all the statistics are printed at the end of each repetition.
 
 ## Generating random variates
@@ -73,7 +79,7 @@ The simulation library supports the following distributions:
 
 Distribution | Description
 --- | ---
-intunifor(a, b) | uniform distribution in the range \[a,b\]
+intuniform(a, b) | uniform distribution in the range \[a,b\]
 exponential(mean) | exponential distribution with the given mean
 lognormal(mean, variance) | normal distribution with the given mean and variance
 
