@@ -20,7 +20,9 @@ class SampleModule(BaseModule):
     def handle_message(self, msg):
         # consume the message
         print("New message received\ntext: {}\nfrom: {}".format(msg.get_text(), msg.get_source()))
+        self.queue.append(msg)
 
     def finish(self):
         # destroy all used data structures
+        self.queue.clear()
         pass
