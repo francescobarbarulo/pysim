@@ -1,3 +1,5 @@
+import statistics
+
 from core.event import Event
 from core.signal import Signal
 
@@ -8,6 +10,9 @@ class BaseModule(object):
         self.__sim_time = 0
         self.__events = []
         self.__signals = {}
+
+    def set_name(self, name):
+        self.__name = name
 
     def get_name(self):
         return self.__name
@@ -62,8 +67,14 @@ class BaseModule(object):
 
         signal.emit(value)
 
+    def collect_signals(self):
+        for signal in self.__signals.values():
+            if signal.get_stat_type() == "mean":
+                print("{}: {}".format(signal.get_name(), statistics.mean(signal.get_records())))
+
     def reset(self):
         self.__sim_time = 0
+        self.finish()
         self.__events.clear()
         for s in self.__signals.values():
             s.reset()
@@ -71,8 +82,8 @@ class BaseModule(object):
     def __del__(self):
         self.finish()
 
-        for e in self.__events:
-            del e
+        self.__events.clear()
+        self.__signals.clear()
 
     def initialize(self):
         """

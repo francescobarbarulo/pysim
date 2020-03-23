@@ -1,11 +1,8 @@
 import bisect
-from datetime import datetime
-import statistics
 import random
-import sys, os
+from datetime import datetime
 from configparser import ConfigParser
 
-from core.modules.baseModule import BaseModule
 from core.event import Event
 
 
@@ -31,12 +28,9 @@ class Simulator(object):
         self.__sim_time_limit = int(config["DEFAULT"]["sim_time_limit"])
         self.__repeat = int(config["DEFAULT"]["repeat"])
 
-    def is_valid(self, m: BaseModule):
-        return m.get_name() not in self.modules.keys()
-
     def register_module(self, *args):
         for m in args:
-            if self.is_valid(m):
+            if m.get_name() not in self.modules.keys():
                 self.modules.update({m.get_name(): m})
             else:
                 raise Exception("Duplicated module with same name {}".format(m.get_name()))
@@ -51,7 +45,7 @@ class Simulator(object):
 
     def run(self):
         for repeat in range(self.__repeat):
-            print("*** Simluation #{} ***".format(repeat))
+            print("*** Simulation #{} ***".format(repeat))
             random.seed(repeat)
             self.reset()
 
@@ -79,13 +73,11 @@ class Simulator(object):
     def finish(self):
         self.events.clear()
 
-        self.collect_signals()
+        self.collect_statistics()
 
-    def collect_signals(self):
+    def collect_statistics(self):
         for m in self.modules.values():
-            for signal in m.get_signals().values():
-                if signal.get_stat_type() == "mean":
-                    print("{}: {}".format(signal.get_name(), statistics.mean(signal.get_records())))
+            m.collect_signals()
 
     def reset(self):
         self.__sim_time = 0
@@ -94,10 +86,7 @@ class Simulator(object):
             m.reset()
 
     def __del__(self):
-        for m in self.modules.values():
-            del m
-
-        for e in self.events:
-            del e
+        self.modules.clear()
+        self.events.clear()
 
         print("Session finished at {}".format(datetime.now().strftime("%d-%m-%Y %H:%M:%S:%f")))
