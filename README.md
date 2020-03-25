@@ -8,9 +8,14 @@ The repository is organized in this way:
 - _pysim_ contains all the essential data structures for running the simulator (it should not be touched except if you want to improve it, in this case you are welcome);
 - _examples_ contains some project examples with their own modules;
 
-In order to run some of these examples, you need download the repo, entering the repo and start one of the _main_ programs issuing, for instance:
+In order to run some of these examples, you need download the repo, entering the repo, intalling the requirements by:
+```shell
+pip install -r requirements.txt
 ```
-python3 echo_reply.py
+
+and starting one of the _main_ programs, for instance:
+```
+python3 tictoc.py
 ```
 
 ## Experiments
@@ -64,8 +69,9 @@ The `Message` class can be derived in order to create your custom messages. Be c
 
 ## Signals and Statistics
 
-Signals are useful for exposing statistical properties of the model. Signals are identified by a _name_ and are emitted by modules. 
-In order to emit a signal you need to register it first in the constructor of the associated module. At the registration you need to assign the name, which must be unique, and the type of statistic that you want to collect (only mean available at this moment) like in the following example:
+Signals are useful for exposing statistical properties of the model. Signals are identified by a _name_ and are emitted by modules.
+
+In order to emit a signal you need to register it first in the constructor of the associated module. At the registration you need to assign the name, which must be unique in the module, and the type of statistic that you want to collect (only mean available at this moment) like in the following example:
 
 ```python
 self.register_signal("response_time", "mean")
@@ -77,7 +83,9 @@ In order to emit a signal you can call the function specifying the _name_ of the
 self.emit("response_time", 1.23456789)
 ```
 
-At the moment, all the statistics are printed at the end of each repetition.
+If the _warm_up_period_ is set, signals emitted in its range are not considered in the statistic computation.
+
+At the end of the simulation, all the statistics associated to the registered signals are stored in the `experiment_dir` in a `.csv` file named _module_name-signal_name.csv_.
 
 ## Generating random variates
 
@@ -128,7 +136,7 @@ class SampleModule(BaseModule):
 
     def handle_message(self, msg):
         # consume the message
-        self.log("New message received\ntext: {}\nfrom: {}".format(msg.get_text(), msg.get_source()))
+        self.log("Message '{}' received from {}".format(msg.get_text(), msg.get_source()))
         self.queue.append(msg)
 
     def finish(self):
