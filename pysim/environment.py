@@ -14,7 +14,7 @@ class Environment(object):
     def __str__(self):
         str = ""
         for n, m in self.__items.items():
-            str += "{{{}: {}}} ".format(n, type(m))
+            str += "{{{}: {}}} ".format(n, m)
         return str
 
     def __del__(self):

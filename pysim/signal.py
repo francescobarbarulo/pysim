@@ -1,11 +1,18 @@
+from pysim.experiment import ex
+
+
 class Signal(object):
-    def __init__(self, name, stat_type):
+    @ex.capture
+    def __init__(self, name, stat_type, warm_up_period=0):
         self.__name = name
         self.__stat_type = stat_type
         self.__records = {}
 
+        self.__warm_up_period = warm_up_period
+
     def emit(self, time, value):
-        self.__records.update({time: value})
+        if time > self.__warm_up_period:
+            self.__records.update({time: value})
 
     def get_name(self):
         return self.__name
@@ -14,7 +21,7 @@ class Signal(object):
         return self.__stat_type
 
     def get_records(self):
-        return self.__records.values()
+        return self.__records
 
     def reset(self):
         self.__records.clear()

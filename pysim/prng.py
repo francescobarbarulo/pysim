@@ -5,7 +5,7 @@ class PRNG(object):
 
     @staticmethod
     def intuniform(a, b):
-        return random.randint(a, b)
+        return random.randint(a, b-1)
 
     @staticmethod
     def exponential(lambd):

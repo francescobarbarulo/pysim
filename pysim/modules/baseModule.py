@@ -1,17 +1,21 @@
 import statistics
 
-from core.event import Event
-from core.signal import Signal
+from pysim.experiment import ex
+from pysim.event import Event
+from pysim.signal import Signal
+from pysim.logger import logger
 
 
 class BaseModule(object):
-    def __init__(self, name):
+    @ex.capture
+    def __init__(self, name, debug=True):
         self.__name = name
         self.__sim_time = 0
-        self._warm_up_period = 0
 
         self.__events = []
         self.__signals = {}
+
+        self.debug = debug
 
     def set_name(self, name):
         self.__name = name
@@ -56,7 +60,8 @@ class BaseModule(object):
         if name not in self.__signals.keys():
             self.__signals.update({name: Signal(name, signal_type)})
         else:
-            raise Exception("Duplicated signals with name {}".format(name))
+            logger.error("Duplicated signals with name {} for module {}".format(name, self.__name))
+            exit(-1)
 
     def get_signals(self):
         return self.__signals
@@ -65,22 +70,20 @@ class BaseModule(object):
         signal = self.__signals.get(signal_name)
 
         if signal is None:
-            raise Exception("Signal {} not registered".format(signal_name))
+            logger.error("Signal {} not registered".format(signal_name))
+            exit(-1)
 
-        if self.__sim_time > self._warm_up_period:
-            signal.emit(self.__sim_time, value)
+        signal.emit(self.__sim_time, value)
 
     def collect_signals(self):
         for signal in self.__signals.values():
-            if signal.get_stat_type() == "mean":
-                print("{}: {}".format(signal.get_name(), statistics.mean(signal.get_records())))
+            if signal.get_records():
+                if signal.get_stat_type() == "mean":
+                    print("[{}] {}: {}".format(self.__name, signal.get_name(), statistics.mean(signal.get_records().values())))
 
-    def reset(self):
-        self.__sim_time = 0
-        self.finish()
-        self.__events.clear()
-        for s in self.__signals.values():
-            s.reset()
+    def log(self, text):
+        if self.debug:
+            logger.info("[{}][{}] {}".format(self.__sim_time, self.__name, text))
 
     def __del__(self):
         self.finish()

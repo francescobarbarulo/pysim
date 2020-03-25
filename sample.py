@@ -1,4 +1,4 @@
-from core.simulator import Simulator
+from pysim.simulator import Simulator
 
 # import your own modules, for instance
 from examples.Sample.sampleModule import SampleModule

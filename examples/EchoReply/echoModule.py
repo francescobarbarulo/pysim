@@ -1,5 +1,5 @@
-from core.modules.baseModule import BaseModule
-from core.message import Message
+from pysim.modules.baseModule import BaseModule
+from pysim.message import Message
 
 
 class EchoModule(BaseModule):
