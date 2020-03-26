@@ -1,12 +1,12 @@
 # pysim
 
-pysim is an event-driven python simulator. It was born for fun based on the OMNET++ concept. One of the advantages is that  the network definition is no more needed.
+pysim is an event-driven python simulator. It was born for fun based on the OMNET++ concept. One of the advantages is that  the network definition is no more needed (forgive about NED files).
 
 ## Repo
 
 In the repo two examples are provided in order to show how pysim works and which are its main features.
-
 In order to run some of these examples, you need download the repo, entering the repo, installing the requirements by:
+
 ```shell
 pip install -r requirements.txt
 ```
@@ -107,16 +107,16 @@ self.log("log text")
 
 The logging outcome is in the form:
 ```text
-INFO - pysim - [sim_time][module_name] your text
+INFO - pysim - [sim_time][module_name] your log text
 ```
 
-### Build your project
+## Build your project
 
-If you want to try create a project based on pysim, you need to create a new `project` folder in the main directory in which you will put your modules.
+If you want to build a project based on pysim, you need to create a new `project` folder in the main directory in which you will put your modules.
 
 The module should look like the following:
 ```python
-# project/MyModule.py
+# project/myModule.py
 
 from pysim.modules.baseModule import BaseModule
 from pysim.core.message import Message
@@ -160,7 +160,7 @@ The script should look like the following:
 from pysim.core.simulator import Simulator
 
 # import your own modules, for instance
-from project import MyModule
+from project.myModule import MyModule
 
 
 def main():
@@ -187,6 +187,37 @@ The outcome should look like:
 ```
 INFO - pysim - [0][my_module] Message 'hello' received from my_module
 ```
+
+### Configure your experiments
+
+Since pysim uses the Sacred framework, you can take advantage by its powerful features. Thus, if you need to configure some parameters, pysim exposes an `Experiment` instance that you can use by importing both in _myModule.py_ and _project.py_ by:
+
+```python
+from pysim.core.experiment import ex
+```
+
+Some guidelines:
+
+1. Define a configuration before the _main_ function just defining a simple function decorated by the `@ex.config` which containes the _key-value_ experiment parameters. They can be of any type.
+
+```python
+@ex.config
+def config():
+    param1 = 2020
+    param2 = "2020"
+    param3 = True
+```
+
+2. If you need to configure some parameters used by your module, just decorate its constructor with `@ex.capture` passing the parameters as arguments:
+
+```python
+...
+@ex.capture
+def __init__(self, param1, param2, param3):
+    ...
+```
+
+3. Decorate the _main_ function with `@ex.automain` removing the `if __name__ == '__main__':` statement, if present.
 
 ## Collaborate
 Feel free to fork it and submit your changes, you are welcome!
