@@ -1,9 +1,9 @@
 import statistics
 
-from pysim.experiment import ex
-from pysim.event import Event
-from pysim.signal import Signal
-from pysim.logger import logger
+from pysim.core.experiment import ex
+from pysim.core.event import Event
+from pysim.core.signal import Signal
+from pysim.core.logger import logger
 
 
 class BaseModule(object):

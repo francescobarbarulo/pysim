@@ -1,6 +1,4 @@
 from pysim.modules.baseModule import BaseModule
-from pysim.message import Message
-import time
 
 
 class TocModule(BaseModule):

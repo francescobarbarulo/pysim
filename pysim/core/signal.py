@@ -1,4 +1,4 @@
-from pysim.experiment import ex
+from pysim.core.experiment import ex
 
 
 class Signal(object):

@@ -1,5 +1,5 @@
 from pysim.modules.baseModule import BaseModule
-from pysim.message import Message
+from pysim.core.message import Message
 
 
 class SampleModule(BaseModule):

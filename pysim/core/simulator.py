@@ -3,10 +3,10 @@ import bisect
 import pandas as pd
 from copy import deepcopy
 
-from pysim.event import Event
-from pysim.environment import Environment
-from pysim.logger import logger
-from pysim.experiment import ex
+from pysim.core.event import Event
+from pysim.core.environment import Environment
+from pysim.core.logger import logger
+from pysim.core.experiment import ex
 
 
 class Simulator(object):

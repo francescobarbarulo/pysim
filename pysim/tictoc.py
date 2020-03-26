@@ -4,9 +4,9 @@
     Module "tic" starts the loop interaction with "toc".
 """
 
-from examples.TicToc.ticModule import TicModule
-from examples.TicToc.tocModule import TocModule
-from pysim.simulator import Simulator
+from .examples.TicToc.ticModule import TicModule
+from .examples.TicToc.tocModule import TocModule
+from .core.simulator import Simulator
 
 
 def main():

@@ -1,3 +1,8 @@
 .idea/
 env/
 *.pyc
+results/
+pysim/examples/CRan
+pysim/run.py
+batch.py
+plot.py

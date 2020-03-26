@@ -4,18 +4,16 @@ pysim is an event-driven python simulator. It was born for fun based on the OMNE
 
 ## Repo
 
-The repository is organized in this way:
-- _pysim_ contains all the essential data structures for running the simulator (it should not be touched except if you want to improve it, in this case you are welcome);
-- _examples_ contains some project examples with their own modules;
+In the repo two examples are provided in order to show how pysim works and which are its main features.
 
-In order to run some of these examples, you need download the repo, entering the repo, intalling the requirements by:
+In order to run some of these examples, you need download the repo, entering the repo, installing the requirements by:
 ```shell
 pip install -r requirements.txt
 ```
 
 and starting one of the _main_ programs, for instance:
 ```
-python3 tictoc.py
+python3 -m pysim.tictoc
 ```
 
 ## Experiments
@@ -112,19 +110,21 @@ The logging outcome is in the form:
 INFO - pysim - [sim_time][module_name] your text
 ```
 
-### Build your own module
+### Build your project
 
-Your own module should look like the following:
+If you want to try create a project based on pysim, you need to create a new `project` folder in the main directory in which you will put your modules.
+
+The module should look like the following:
 ```python
-# examples/Sample/sampleModule.py
+# project/MyModule.py
 
 from pysim.modules.baseModule import BaseModule
-from pysim.message import Message
+from pysim.core.message import Message
 
 
-class SampleModule(BaseModule):
+class MyModule(BaseModule):
     def __init__(self, name):
-        super(SampleModule, self).__init__(name)
+        super(MyModule, self).__init__(name)
         # here data structures can be defined, for instance
         self.queue = []
 
@@ -146,15 +146,21 @@ class SampleModule(BaseModule):
 
 ```
 
-For creating a new simulation script you need to create a new file, for instance `sample.py`, in the main directory. Then you have to create a new `Simulator` instance to which you can register the modules.
+For creating a new simulation script you need to create a new file, for instance `project.py`, in the main directory. 
+In that file, you need to import the `Simulator` object which provides you two main functions:
+
+- `register_module(module_instance, quantity)` registers your module creating a number of instances accordingly to the _quantity_ value.
+- `run()` starts the simulator
+
+The script should look like the following:
 
 ```python
-# sample.py
+# project.py
 
-from pysim.simulator import Simulator
+from pysim.core.simulator import Simulator
 
 # import your own modules, for instance
-from examples.Sample.sampleModule import SampleModule
+from project import MyModule
 
 
 def main():
@@ -162,7 +168,7 @@ def main():
     sim = Simulator()
 
     # register your module
-    sim.register_module(SampleModule("sample"))
+    sim.register_module(MyModule("my_module"))
 
     # run the simulator
     sim.run()
@@ -174,12 +180,12 @@ if __name__ == '__main__':
 
 Finally, let's launch the simulation by issuing:
 ```
-python3 sample.py
+python3 project.py
 ```
 
 The outcome should look like:
 ```
-INFO - pysim - [0][sample] Message 'hello' received from sample
+INFO - pysim - [0][my_module] Message 'hello' received from my_module
 ```
 
 ## Collaborate
