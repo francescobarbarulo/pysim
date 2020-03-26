@@ -4,17 +4,15 @@ pysim is an event-driven python simulator. It was born for fun based on the OMNE
 
 ## Repo
 
-In the repo two examples are provided in order to show how pysim works and which are its main features.
+In the repo two examples are provided in order to show how pysim works and which are its main features
+In order to run these examples, you need download the repo, entering the repo, installing the requirements by:
 
-In order to run some of these examples, you need download the repo, entering the repo, installing the requirements by:
 ```shell
 pip install -r requirements.txt
 ```
 
-and starting one of the _main_ programs, for instance:
-```
-python3 -m pysim.tictoc
-```
+- `python3 -m pysim.examples.tictoc.run` for _tictoc_ example
+- `python3 -m pysim.examples.sample.run` from the _sample_ example described in this [Section](#build-your-project)
 
 ## Experiments
 
@@ -118,7 +116,7 @@ The module should look like the following:
 ```python
 # project/MyModule.py
 
-from pysim.modules.baseModule import BaseModule
+from pysim.core.modules.baseModule import BaseModule
 from pysim.core.message import Message
 
 

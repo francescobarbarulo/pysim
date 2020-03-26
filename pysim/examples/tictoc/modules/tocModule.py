@@ -1,4 +1,4 @@
-from pysim.modules.baseModule import BaseModule
+from pysim.core.modules.baseModule import BaseModule
 
 
 class TocModule(BaseModule):

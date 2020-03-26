@@ -1,12 +1,12 @@
 """
-    *** TicToc example ***
+    *** tictoc example ***
     This simulation implements a tic-toc interaction between two modules.
     Module "tic" starts the loop interaction with "toc".
 """
 
-from .examples.TicToc.ticModule import TicModule
-from .examples.TicToc.tocModule import TocModule
-from .core.simulator import Simulator
+from pysim.examples.tictoc.modules.ticModule import TicModule
+from pysim.examples.tictoc.modules.tocModule import TocModule
+from pysim.core.simulator import Simulator
 
 
 def main():
