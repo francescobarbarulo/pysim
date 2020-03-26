@@ -147,7 +147,7 @@ class MyModule(BaseModule):
 For creating a new simulation script you need to create a new file, for instance `project.py`, in the main directory. 
 In that file, you need to import the `Simulator` object which provides you two main functions:
 
-- `register_module(module_instance, quantity)` registers your module creating a number of instances accordingly to the _quantity_ value.
+- `register_module(module_instance, quantity)` registers your module creating a number of instances accordingly to the _quantity_ value (default 1).
 - `run()` starts the simulator
 
 The script should look like the following:
@@ -215,7 +215,7 @@ def __init__(self, param1, param2, param3):
     ...
 ```
 
-3. Decorate the _main_ function with `@ex.automain` removing the `if __name__ == '__main__':` statement, if present.
+3. Decorate the _main_ function with `@ex.automain` removing the `if __name__ == '__main__':` statement if present.
 
 ## Collaborate
 Feel free to fork it and submit your changes, you are welcome!
