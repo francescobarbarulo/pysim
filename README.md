@@ -2,9 +2,9 @@
 
 pysim is an event-driven python simulator. It was born for fun based on the OMNET++ concept. One of the advantages is that  the network definition is no more needed (forgive about NED files).
 
-## Repo
+## Clone and run
 
-In the repo two examples are provided in order to show how pysim works and which are its main features
+In the repo two examples are provided in order to show how pysim works and which are its main features.
 In order to run these examples, you need download the repo, entering the repo, installing the requirements by:
 
 ```shell
