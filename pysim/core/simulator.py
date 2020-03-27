@@ -37,17 +37,22 @@ class Simulator(object):
             exit(-1)
 
     def notify(self, e: Event):
-        target = self.__environment.get(e.get_message().get_dest())
+        target = self.__environment.get(e.get_target())
 
         if not target:
-            logger.error("No module named {}".format(e.get_message().get_dest()))
+            logger.error("No module named {}".format(e.get_target()))
             exit(-1)
 
         return target.notify(e)
 
     def run(self):
+        new_events = []
+
         for module in self.__environment.get_items().values():
-            self.__events += module.load()
+            new_events += module.load()
+
+        while new_events:
+            bisect.insort_left(self.__events, new_events.pop(0))
 
         while self.__events:
             self.forward()

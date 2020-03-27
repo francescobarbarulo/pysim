@@ -2,6 +2,7 @@ import statistics
 
 from pysim.core.experiment import ex
 from pysim.core.event import Event
+from pysim.core.message import Message
 from pysim.core.signal import Signal
 from pysim.core.logger import logger
 
@@ -27,6 +28,7 @@ class BaseModule(object):
         return self.__sim_time
 
     def load(self):
+        self.start()
         self.initialize()
 
         events = []
@@ -40,15 +42,22 @@ class BaseModule(object):
         msg.set_source(self.__name)
         msg.set_dest(dest)
 
-        e = Event(msg, self.__sim_time + delay)
+        e = Event(msg, dest, self.__sim_time + delay)
         self.__events.append(e)
 
-    def schedule_at(self, msg, delay=0):
-        self.send(msg, self.__name, delay)
+    def schedule_at(self, elem, delay=0):
+        if isinstance(elem, Message):
+            self.send(elem, self.__name, delay)
+        else:
+            self.__events.append(Event(elem, self.__name, self.__sim_time + delay))
 
     def notify(self, e):
         self.__sim_time = e.get_time()
-        self.handle_message(e.get_message())
+
+        if isinstance(e.get_elem(), Message):
+            self.handle_message(e.get_elem())
+        else:
+            self.move(e.get_elem())
 
         new_events = []
         while self.__events:
@@ -90,6 +99,12 @@ class BaseModule(object):
 
         self.__events.clear()
         self.__signals.clear()
+
+    def start(self):
+        pass
+
+    def move(self, position):
+        pass
 
     def initialize(self):
         """
