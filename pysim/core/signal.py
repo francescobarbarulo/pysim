@@ -23,5 +23,5 @@ class Signal(object):
     def get_records(self):
         return self.__records
 
-    def reset(self):
+    def __del__(self):
         self.__records.clear()
