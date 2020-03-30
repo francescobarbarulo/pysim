@@ -72,7 +72,7 @@ class Simulator(object):
         del next_event
 
         while new_events:
-            bisect.insort_left(self.__events, new_events.pop(0))
+            bisect.insort_right(self.__events, new_events.pop(0))
 
     def finish(self):
         for m in self.__environment.get_items().values():
