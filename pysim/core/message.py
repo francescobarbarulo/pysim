@@ -1,5 +1,5 @@
 class Message(object):
-    def __init__(self, text="hello"):
+    def __init__(self, text=None):
         self.__text = text
         self.__src = None
         self.__dest = None

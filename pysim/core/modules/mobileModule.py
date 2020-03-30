@@ -2,6 +2,7 @@ from point2d import Point2D
 
 from pysim.core.modules.baseModule import BaseModule
 from pysim.core.message import Message
+from pysim.core.movement import Movement
 from pysim.core.prng import PRNG
 
 
@@ -12,7 +13,7 @@ class MobileModule(BaseModule):
         self.__space = 1
         self.__speed = speed
         self.__position = initial_position
-        self.__position_to_reach = Point2D()
+        self.__position_to_reach = initial_position
         self.__position_registration_time = 0
 
     def change_direction(self):
@@ -26,11 +27,8 @@ class MobileModule(BaseModule):
         else:
             self.__position_to_reach = Point2D(self.__position.x, self.__position.y - 1)
 
-    def start(self):
-        self.move(self.__position)
-
-    def move(self, new_position):
-        self.__position = new_position
+    def move(self):
+        self.__position = self.__position_to_reach
         self.__position_registration_time = self.sim_time()
 
         self.change_direction()
@@ -38,7 +36,7 @@ class MobileModule(BaseModule):
         self.log("Current position: {}".format(self.__position))
         self.log("Next position: {}".format(self.__position_to_reach))
 
-        self.schedule_at(self.__position_to_reach, self.__space / self.__speed)
+        self.schedule_at(Movement(), self.__space / self.__speed)
 
     def locate(self):
         direction = self.__position_to_reach - self.__position

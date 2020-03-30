@@ -11,7 +11,7 @@ class SampleModule(BaseModule):
     def initialize(self):
         # if you want the module to start you need to schedule a message
         # so that it will trigger the handle_message function
-        msg = Message()
+        msg = Message("hello")
         self.schedule_at(msg, delay=0)
 
     def handle_message(self, msg):
@@ -22,4 +22,3 @@ class SampleModule(BaseModule):
     def finish(self):
         # destroy all used data structures
         self.queue.clear()
-        pass

@@ -14,7 +14,7 @@ class TicModule(BaseModule):
         else:
             self.log("Received new message {} from {}".format(msg.get_text(), msg.get_source()))
 
-        m = Message()
+        m = Message("hello")
         self.send(m, "toc", delay=1)
         self.log("Send message {} to {}".format(m.get_text(), m.get_dest()))
 
