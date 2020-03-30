@@ -11,7 +11,7 @@ In order to run these examples, you need download the repo, entering the repo, i
 pip install -r requirements.txt
 ```
 
-Then you can run one of the example by:
+Then you can run one of the examples by:
 
 - `python3 -m pysim.examples.tictoc.run` for trivial _tictoc_ example
 - `python3 -m pysim.examples.forrestgump.run` for knowing how _mobile modules_ work
@@ -112,7 +112,7 @@ class MyModule(BaseModule):
     def initialize(self):
         # if you want the module to start you need to schedule a message
         # so that it will trigger the handle_message function
-        msg = Message()
+        msg = Message("hello")
         self.schedule_at(msg, delay=0)
 
     def handle_message(self, msg):
@@ -123,8 +123,6 @@ class MyModule(BaseModule):
     def finish(self):
         # destroy all used data structures
         self.queue.clear()
-        pass
-
 ```
 
 For creating a new simulation script you need to create a new file, for instance `project.py`, in the main directory. 
@@ -138,12 +136,14 @@ The script should look like the following:
 ```python
 # project.py
 
+from pysim.core.experiment import ex
 from pysim.core.simulator import Simulator
 
 # import your own modules, for instance
 from project.myModule import MyModule
 
 
+@ex.automain
 def main():
     # create a new simulator
     sim = Simulator()
@@ -153,10 +153,6 @@ def main():
 
     # run the simulator
     sim.run()
-
-
-if __name__ == '__main__':
-    main()
 ```
 
 Finally, let's launch the simulation by issuing:
