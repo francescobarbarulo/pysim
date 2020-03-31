@@ -19,13 +19,17 @@ If you are curious to see how pysim works, you can try to run one of these examp
 
 _Sample_ represents the project described in this [Section](#build-your-project):
 
-```python3 -m pysim.examples.sample.run`````
+```
+python3 -m pysim.examples.sample.run
+```
 
 #### TicToc
 
 _TicToc_ simulates two modules that keep passing the same message back and forth:
 
-```python3 -m pysim.examples.tictoc.run```
+```
+python3 -m pysim.examples.tictoc.run
+```
 
 #### Airport
 
@@ -34,12 +38,14 @@ The inter-arrival time between passengers is modeled by the exponential distribu
 When a passenger arrives it enqueues itself at the gate having the minimum queue length. 
 The check-in time is determined by the number of luggages they have.
 
-```python3 -m pysim.examples.airport.run```
+```
+python3 -m pysim.examples.airport.run
+```
 
 ## Timeliness
 Take in mind that values of **all** variables representing _time_ are treated as **seconds**.
 
-## BaseModule module
+## BaseModule
 
 The `BaseModule` is the base class that represents a module from which all the modules must be derived. It can be considered as an interface.
 Indeed, if you want to create your own module, you can override three methods exposed by this interface:
@@ -244,15 +250,15 @@ def main(param1, param2, param3):
     ...
 ```
 
-## Mobile module
+## MobileModule
 
-_Mobile modules_ are useful when you need to represent and object that randomly moves in a 2D space.
+_Mobile modules_ are useful when you need to represent an object that randomly moves in a 2D space.
 They are built in the way that they ideally move in a grid of a cartesian plane with 1x1 cells.
 They can move following the grid lines and they can change direction only at their intersections.
 
 Mobile modules can be created specifying:
 - _initial_position_: a `Point2D` object which specifies the initial position of the module in the grid.
-- _speed_: an integer that specifies how many cells can travers in 1 second of simulation time.
+- _speed_: an integer that specifies how many cells the module can travers in 1 second of simulation time.
 
 An example is provided to show how _mobile modules_ work:
 ```
