@@ -39,21 +39,21 @@ class BaseModule(object):
 
         return events
 
-    def send(self, msg, dest, delay=0):
+    def send(self, msg: Message, dest, delay=0):
         msg.set_source(self.__name)
         msg.set_dest(dest)
 
         e = Event(msg, dest, self.__sim_time + delay)
         self.__events.append(e)
 
-    def schedule_at(self, msg, delay=0):
+    def schedule_at(self, msg: Message, delay=0):
         if isinstance(msg, Movement):
             e = Event(msg, self.__name, self.__sim_time + delay)
             self.__events.append(e)
         else:
             self.send(msg, self.__name, delay)
 
-    def notify(self, e):
+    def notify(self, e: Event):
         self.__sim_time = e.get_time()
 
         if isinstance(e.get_message(), Movement):
@@ -108,7 +108,7 @@ class BaseModule(object):
     def initialize(self):
         """
         The module that starts the interaction must implement this method
-        with at least one send() call
+        with at least one send() or schedule_at() call
         """
         pass
 

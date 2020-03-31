@@ -2,7 +2,6 @@
 env/
 *.pyc
 results/
-pysim/examples/CRan
-pysim/examples/CRan/run.py
+pysim/examples/cran
 batch.py
 plot.py

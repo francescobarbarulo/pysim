@@ -11,11 +11,30 @@ In order to run these examples, you need download the repo, entering the repo, i
 pip install -r requirements.txt
 ```
 
-Then you can run one of the examples by:
+### Examples
 
-- `python3 -m pysim.examples.tictoc.run` for trivial _tictoc_ example
-- `python3 -m pysim.examples.forrestgump.run` for knowing how _mobile modules_ work
-- `python3 -m pysim.examples.sample.run` from the _sample_ example described in this [Section](#build-your-project)
+If you are curious to see how pysim works, you can try to run one of these examples.
+
+#### Sample
+
+_Sample_ represents the project described in this [Section](#build-your-project):
+
+```python3 -m pysim.examples.sample.run`````
+
+#### TicToc
+
+_TicToc_ simulates two modules that keep passing the same message back and forth:
+
+```python3 -m pysim.examples.tictoc.run```
+
+#### Airport
+
+_Airport_ simulates the arrival of passengers at the terminal and their wait for doing the check-in.
+The inter-arrival time between passengers is modeled by the exponential distribution (see [Random variates](#generating-random-variates)).
+When a passenger arrives it enqueues itself at the gate having the minimum queue length. 
+The check-in time is determined by the number of luggages they have.
+
+```python3 -m pysim.examples.airport.run```
 
 ## Timeliness
 Take in mind that values of **all** variables representing _time_ are treated as **seconds**.
@@ -128,8 +147,9 @@ class MyModule(BaseModule):
 For creating a new simulation script you need to create a new file, for instance `project.py`, in the main directory. 
 In that file, you need to import the `Simulator` object which provides you two main functions:
 
-- `register_module(module_instance, quantity)` registers your module creating a number of instances accordingly to the _quantity_ value (default 1).
-- `run()` starts the simulator
+- `register_module(module_instance, quantity)` registers your module creating a number of instances accordingly to the _quantity_ value (default 1). Note that when the quantity is more than 1, the created modules will be named adding a `-{value}` to their original name.
+Thus, if your module is named _my_module_ and you need 3 of it, they will be named as _my_module-0_, _my_module-1_ and _my_module-2_.
+- `run()` starts the simulator.
 
 The script should look like the following:
 
@@ -222,6 +242,21 @@ If you need to use some configuration parameters just pass them as arguments:
 @ex.automain
 def main(param1, param2, param3):
     ...
+```
+
+## Mobile module
+
+_Mobile modules_ are useful when you need to represent and object that randomly moves in a 2D space.
+They are built in the way that they ideally move in a grid of a cartesian plane with 1x1 cells.
+They can move following the grid lines and they can change direction only at their intersections.
+
+Mobile modules can be created specifying:
+- _initial_position_: a `Point2D` object which specifies the initial position of the module in the grid.
+- _speed_: an integer that specifies how many cells can travers in 1 second of simulation time.
+
+An example is provided to show how _mobile modules_ work:
+```
+python3 -m pysim.examples.forrestgump.run
 ```
 
 ## Collaborate
