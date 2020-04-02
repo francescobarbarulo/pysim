@@ -1,23 +1,23 @@
 class Message(object):
     def __init__(self, text=None):
-        self.__text = text
-        self.__src = None
-        self.__dest = None
+        self._text = text
+        self._src = None
+        self._dest = None
 
     def get_text(self):
-        return self.__text
+        return self._text
 
     def set_source(self, src):
-        self.__src = src
+        self._src = src
 
     def get_source(self):
-        return self.__src
+        return self._src
 
     def set_dest(self, dest):
-        self.__dest = dest
+        self._dest = dest
 
     def get_dest(self):
-        return self.__dest
+        return self._dest
 
     def is_self_message(self):
-        return self.__src == self.__dest
+        return self._src == self._dest

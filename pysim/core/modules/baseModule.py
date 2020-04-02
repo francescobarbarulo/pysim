@@ -11,22 +11,22 @@ from pysim.core.logger import logger
 class BaseModule(object):
     @ex.capture
     def __init__(self, name, debug=True):
-        self.__name = name
-        self.__sim_time = 0
+        self._name = name
+        self._sim_time = 0
 
-        self.__events = []
-        self.__signals = {}
+        self._events = []
+        self._signals = {}
 
         self.debug = debug
 
     def set_name(self, name):
-        self.__name = name
+        self._name = name
 
     def get_name(self):
-        return self.__name
+        return self._name
 
     def sim_time(self):
-        return self.__sim_time
+        return self._sim_time
 
     def load(self):
         self.move()
@@ -34,27 +34,27 @@ class BaseModule(object):
 
         events = []
 
-        while self.__events:
-            events.append(self.__events.pop(0))
+        while self._events:
+            events.append(self._events.pop(0))
 
         return events
 
     def send(self, msg: Message, dest, delay=0):
-        msg.set_source(self.__name)
+        msg.set_source(self._name)
         msg.set_dest(dest)
 
-        e = Event(msg, dest, self.__sim_time + delay)
-        self.__events.append(e)
+        e = Event(msg, dest, self._sim_time + delay)
+        self._events.append(e)
 
     def schedule_at(self, msg: Message, delay=0):
         if isinstance(msg, Movement):
-            e = Event(msg, self.__name, self.__sim_time + delay)
-            self.__events.append(e)
+            e = Event(msg, self._name, self._sim_time + delay)
+            self._events.append(e)
         else:
-            self.send(msg, self.__name, delay)
+            self.send(msg, self._name, delay)
 
     def notify(self, e: Event):
-        self.__sim_time = e.get_time()
+        self._sim_time = e.get_time()
 
         if isinstance(e.get_message(), Movement):
             self.move()
@@ -62,45 +62,45 @@ class BaseModule(object):
             self.handle_message(e.get_message())
 
         new_events = []
-        while self.__events:
-            new_events.append(self.__events.pop(0))
+        while self._events:
+            new_events.append(self._events.pop(0))
 
         return new_events
 
     def register_signal(self, name, signal_type):
-        if name not in self.__signals.keys():
-            self.__signals.update({name: Signal(name, signal_type)})
+        if name not in self._signals.keys():
+            self._signals.update({name: Signal(name, signal_type)})
         else:
-            logger.error("Duplicated signals with name {} for module {}".format(name, self.__name))
+            logger.error("Duplicated signals with name {} for module {}".format(name, self._name))
             exit(-1)
 
     def get_signals(self):
-        return self.__signals
+        return self._signals
 
     def emit(self, signal_name, value):
-        signal = self.__signals.get(signal_name)
+        signal = self._signals.get(signal_name)
 
         if signal is None:
             logger.error("Signal {} not registered".format(signal_name))
             exit(-1)
 
-        signal.emit(self.__sim_time, value)
+        signal.emit(self._sim_time, value)
 
     def collect_signals(self):
-        for signal in self.__signals.values():
+        for signal in self._signals.values():
             if signal.get_records():
                 if signal.get_stat_type() == "mean":
-                    print("[{}] {}: {}".format(self.__name, signal.get_name(), statistics.mean(signal.get_records().values())))
+                    print("[{}] {}: {}".format(self._name, signal.get_name(), statistics.mean(signal.get_records().values())))
 
     def log(self, text):
         if self.debug:
-            logger.info("[{}][{}] {}".format(self.__sim_time, self.__name, text))
+            logger.info("[{}][{}] {}".format(self._sim_time, self._name, text))
 
     def __del__(self):
         self.finish()
 
-        self.__events.clear()
-        self.__signals.clear()
+        self._events.clear()
+        self._signals.clear()
 
     def move(self):
         pass

@@ -1,23 +1,23 @@
 class Event(object):
     def __init__(self, msg, target, time):
-        self.__msg = msg
-        self.__time = time
-        self.__target = target
+        self._msg = msg
+        self._time = time
+        self._target = target
 
     def get_message(self):
-        return self.__msg
+        return self._msg
 
     def get_target(self):
-        return self.__target
+        return self._target
 
     def get_time(self):
-        return self.__time
+        return self._time
 
     def __lt__(self, other):
-        return self.__time < other.__time
+        return self._time < other.get_time()
 
     def __del__(self):
-        del self.__msg
+        del self._msg
 
     def __str__(self):
-        return "elem:{} time:{}".format(self.__msg, self.__time)
+        return "elem:{} time:{}".format(self._msg, self._time)

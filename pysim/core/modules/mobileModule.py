@@ -10,42 +10,42 @@ class MobileModule(BaseModule):
     def __init__(self, name, initial_position=Point2D(), speed=1):
         super(MobileModule, self).__init__(name)
 
-        self.__space = 1
-        self.__speed = speed
-        self.__position = initial_position
-        self.__position_to_reach = initial_position
-        self.__position_registration_time = 0
+        self._space = 1
+        self._speed = speed
+        self._position = initial_position
+        self._position_to_reach = initial_position
+        self._position_registration_time = 0
 
     def change_direction(self):
         direction = PRNG.intuniform(0, 4)
         if direction == 0:
-            self.__position_to_reach = Point2D(self.__position.x + 1, self.__position.y)
+            self._position_to_reach = Point2D(self._position.x + 1, self._position.y)
         elif direction == 1:
-            self.__position_to_reach = Point2D(self.__position.x, self.__position.y + 1)
+            self._position_to_reach = Point2D(self._position.x, self._position.y + 1)
         elif direction == 2:
-            self.__position_to_reach = Point2D(self.__position.x - 1, self.__position.y)
+            self._position_to_reach = Point2D(self._position.x - 1, self._position.y)
         else:
-            self.__position_to_reach = Point2D(self.__position.x, self.__position.y - 1)
+            self._position_to_reach = Point2D(self._position.x, self._position.y - 1)
 
     def move(self):
-        self.__position = self.__position_to_reach
-        self.__position_registration_time = self.sim_time()
+        self._position = self._position_to_reach
+        self._position_registration_time = self.sim_time()
 
         self.change_direction()
 
-        self.log("Current position: {}".format(self.__position))
-        self.log("Next position: {}".format(self.__position_to_reach))
+        self.log("Current position: {}".format(self._position))
+        self.log("Next position: {}".format(self._position_to_reach))
 
-        self.schedule_at(Movement(), self.__space / self.__speed)
+        self.schedule_at(Movement(), self._space / self._speed)
 
     def locate(self):
-        direction = self.__position_to_reach - self.__position
-        time = self.sim_time() - self.__position_registration_time
+        direction = self._position_to_reach - self._position
+        time = self.sim_time() - self._position_registration_time
 
         if direction.y == 0:
-            loc = Point2D(self.__position.x + self.__speed * time * direction.x, self.__position.y)
+            loc = Point2D(self._position.x + self._speed * time * direction.x, self._position.y)
         else:
-            loc = Point2D(self.__position.x, self.__position.y + self.__speed * time * direction.y)
+            loc = Point2D(self._position.x, self._position.y + self._speed * time * direction.y)
 
         return loc
 
