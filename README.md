@@ -1,6 +1,6 @@
 # pysim
 
-Pysim is an event-driven python simulator. It was born for fun based on the OMNET++ concept. One of the advantages is that  the network definition is no more needed (forgive about NED files).
+Pysim is an event-driven python simulator. It was born for fun based on the OMNET++ concept. One of the advantages is that  the network definition is no more needed (forget about NED files).
 
 ## Documentation
 
