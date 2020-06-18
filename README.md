@@ -158,7 +158,7 @@ The logging outcome is in the form:
 INFO - pysim - [sim_time][module_name] your log text
 ```
 
-## 8 Build your project
+## Build your project
 
 If you want to build a project based on Pysim, you need to create a new `project` folder in the main directory in which you will put your modules.
 The module should look like the following:
