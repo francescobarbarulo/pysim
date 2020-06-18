@@ -2,7 +2,22 @@
 
 Pysim is an event-driven python simulator. It was born for fun based on the OMNET++ concept. One of the advantages is that the network definition is no more needed (forget about NED files) and the _pythonic way of programming_ can be exploited.
 
-## 1 Cloning repository
+## Table of contents
+- [Cloning repository](#cloning-repository)
+- - [Examples](#examples)
+- [Timeliness](#timeliness)
+- [Modules](#modules)
+- - [BaseModule](#basemodule)
+- - [MobileModule](#mobilemodule)
+- [Messages](#messages)
+- [Signals and Statistics](#signals-and-statistics)
+- [Generating random variates](#generating-random-variates)
+- [Logging](#logging)
+- [Build your project](#build-your-project)
+- [Experiments](#experiments)
+- - [Configure your experiments](#configure-your-experiments)
+
+## Cloning repository
 
 Cloning the repo by:
 
@@ -19,19 +34,19 @@ Intalling the requirements by:
 pip install -r requirements.txt
 ```
 
-### 1.1 Examples
+### Examples
 
 In the repo some examples are provided in order to show how Pysim works and which are its main features. If you are curious, you can try one of the following examples.
 
-#### 1.1.1 Sample
+#### Sample
 
-_Sample_ represents the project described in this [Section](#8-build-your-project):
+_Sample_ represents the project described in this [Section](#build-your-project):
 
 ```bash
 python -m pysim.examples.sample
 ```
 
-#### 1.1.2 TicToc
+#### TicToc
 
 _TicToc_ simulates two modules that keep passing the same message back and forth:
 
@@ -39,10 +54,10 @@ _TicToc_ simulates two modules that keep passing the same message back and forth
 python -m pysim.examples.tictoc
 ```
 
-#### 1.1.3 Airport
+#### Airport
 
 _Airport_ simulates the arrival of passengers at the terminal and their wait for doing the check-in.
-The inter-arrival time between passengers is modeled by the exponential distribution (see [Random variates](#6-generating-random-variates)).
+The inter-arrival time between passengers is modeled by the exponential distribution (see [Random variates](#generating-random-variates)).
 When a passenger arrives it enqueues itself at the gate having the minimum queue length.
 The check-in time is determined by the number of luggages they have.
 
@@ -50,14 +65,14 @@ The check-in time is determined by the number of luggages they have.
 python -m pysim.examples.airport
 ```
 
-## 2 Timeliness
+## Timeliness
 Take in mind that values of **all** variables representing _time_ are treated as **seconds**.
 
-## 3 Modules
+## Modules
 
 Modules represent the actors that interact in the simulation environment. At the moment, two type of modules are provided, from which you can create your own one: `BaseModule` and `MobileModule`.
 
-### 3.1 BaseModule
+### BaseModule
 
 The `BaseModule` is the base class that represents a module from which all the modules must be derived. It can be considered as an interface.
 Indeed, if you want to create your own module, you can override three methods exposed by this interface:
@@ -72,7 +87,7 @@ Moreover `BaseModule` provides some methods for sending messages:
 - `send(msg, dest, delay)` is the standard method for sending a message `msg` to module with name `dest` with a delay equal to `delay` (default 0).
 - `schedule_at(msg, delay)` allows a module to send the message to itself.
 
-### 3.2 MobileModule
+### MobileModule
 
 _Mobile modules_ are useful when you need to represent an object that randomly moves in a 2D space.
 They are built in the way that they ideally move in a grid of a cartesian plane with 1x1 cells.
@@ -87,7 +102,7 @@ An example is provided to show how _mobile modules_ work:
 python -m pysim.examples.forrestgump
 ```
 
-## 4 Messages
+## Messages
 
 Modules interacts each other by means of messages. `Message` is a data structure that keeps:
 - _text_ of the message;
@@ -100,7 +115,7 @@ The `Message` class can be derived in order to create your custom messages.
 Be careful to not override methods of the `Message` base class: `get_text()`, `get_source()`, `get_dest()`.
 
 
-## 5 Signals and Statistics
+## Signals and Statistics
 
 Signals are useful for exposing statistical properties of the model. Signals are identified by a _name_ and are emitted by modules.
 
@@ -120,7 +135,7 @@ If the _warm_up_period_ is set, signals emitted in its range are not considered 
 
 At the end of the simulation, all the statistics associated to the registered signals are stored in the `experiment_dir` in a `.csv` file named _module_name-signal_name.csv_.
 
-## 6 Generating random variates
+## Generating random variates
 
 Pysim gives the possibility to obtain streams of non-uniformly distributed random numbers from various distributions.
 The simulation library supports the following distributions:
@@ -131,9 +146,7 @@ intuniform(a, b) | uniform distribution in the range \[a,b)
 exponential(mean) | exponential distribution with the given mean
 lognormal(mean, variance) | normal distribution with the given mean and variance
 
-You can call these distributions on the class `PRNG`.
-
-## 7 Logging
+## Logging
 
 Pysim provides a built-in _log_ function which acts accordingly to the simulation debug mode. It can be invoked directly by the modules by:
 ```python
@@ -222,7 +235,7 @@ The outcome should look like:
 INFO - pysim - [0][my_module] Message 'hello' received from my_module
 ```
 
-## 9 Experiments
+## Experiments
 
 Pysim uses [Sacred](https://sacred.readthedocs.io/en/stable/) for reproducing computational experiments.
 Pysim configurable parameters are listed in the following table:
@@ -242,7 +255,7 @@ python project.py with seed=0 sim_time_limit=20 warm_up_period=5 debug=False
 
 Of course, the simulation will stop even if it has not reached the `sim_time_limit` in the case no more events are scheduled.
 
-### 9.1 Configure your experiments
+### Configure your experiments
 
 If you need to configure some parameters, Pysim exposes an `Experiment` instance you can use by importing it both in _myModule.py_ and _project.py_ by:
 
