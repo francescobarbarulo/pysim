@@ -1,16 +1,13 @@
 import random
 
 
-class PRNG(object):
+def intuniform(a, b):
+    return random.randint(a, b-1)
 
-    @staticmethod
-    def intuniform(a, b):
-        return random.randint(a, b-1)
 
-    @staticmethod
-    def exponential(lambd):
-        return random.expovariate(1 / lambd)
+def exponential(lambd):
+    return random.expovariate(1 / lambd)
 
-    @staticmethod
-    def lognormal(mu, sigma):
-        return random.lognormvariate(mu, sigma)
+
+def lognormal(mu, sigma):
+    return random.lognormvariate(mu, sigma)

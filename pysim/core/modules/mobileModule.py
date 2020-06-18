@@ -3,7 +3,7 @@ from point2d import Point2D
 from pysim.core.modules.baseModule import BaseModule
 from pysim.core.message import Message
 from pysim.core.movement import Movement
-from pysim.core.prng import PRNG
+import pysim.core.PRNG as PRNG
 
 
 class MobileModule(BaseModule):

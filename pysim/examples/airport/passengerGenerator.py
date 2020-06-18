@@ -1,7 +1,7 @@
 from pysim.core.experiment import ex
 from pysim.core.modules.baseModule import BaseModule
 from pysim.core.message import Message
-from pysim.core.prng import PRNG
+import pysim.core.PRNG as PRNG
 
 from pysim.examples.airport.passenger import Passenger
 
