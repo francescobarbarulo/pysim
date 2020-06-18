@@ -50,14 +50,6 @@ The check-in time is determined by the number of luggages they have.
 python -m pysim.examples.airport
 ```
 
-#### 1.1.4 ForrestGump
-
-_ForrestGump_ simulates a module that moves in the space.
-
-```bash
-python -m pysim.examples.forrestgump
-```
-
 ## 2 Timeliness
 Take in mind that values of **all** variables representing _time_ are treated as **seconds**.
 
@@ -92,7 +84,7 @@ Mobile modules can be created specifying:
 
 An example is provided to show how _mobile modules_ work:
 ```bash
-python -m pysim.examples.forrestgump.run
+python -m pysim.examples.forrestgump
 ```
 
 ## 4 Messages
