@@ -4,18 +4,18 @@ Pysim is an event-driven python simulator. It was born for fun based on the OMNE
 
 ## Table of contents
 - [Cloning repository](#cloning-repository)
-- - [Examples](#examples)
+    - [Examples](#examples)
 - [Timeliness](#timeliness)
 - [Modules](#modules)
-- - [BaseModule](#basemodule)
-- - [MobileModule](#mobilemodule)
+    - [BaseModule](#basemodule)
+    - [MobileModule](#mobilemodule)
 - [Messages](#messages)
 - [Signals and Statistics](#signals-and-statistics)
 - [Generating random variates](#generating-random-variates)
 - [Logging](#logging)
 - [Build your project](#build-your-project)
 - [Experiments](#experiments)
-- - [Configure your experiments](#configure-your-experiments)
+    - [Configure your experiments](#configure-your-experiments)
 
 ## Cloning repository
 
