@@ -296,5 +296,6 @@ def main(param1, param2, param3):
 def __init__(self, param1, param2, param3):
     ...
 ```
+
 ## Collaborate
 Feel free to fork it and submit your changes, you are welcome!
