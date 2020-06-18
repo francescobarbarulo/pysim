@@ -25,7 +25,7 @@ In the repo some examples are provided in order to show how Pysim works and whic
 
 #### 1.1.1 Sample
 
-_Sample_ represents the project described in this [Section](#build-your-project):
+_Sample_ represents the project described in this [Section](#8-build-your-project):
 
 ```bash
 python -m pysim.examples.sample
@@ -42,7 +42,7 @@ python -m pysim.examples.tictoc
 #### 1.1.3 Airport
 
 _Airport_ simulates the arrival of passengers at the terminal and their wait for doing the check-in.
-The inter-arrival time between passengers is modeled by the exponential distribution (see [Random variates](#generating-random-variates)).
+The inter-arrival time between passengers is modeled by the exponential distribution (see [Random variates](#6-generating-random-variates)).
 When a passenger arrives it enqueues itself at the gate having the minimum queue length.
 The check-in time is determined by the number of luggages they have.
 
