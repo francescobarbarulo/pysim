@@ -164,7 +164,7 @@ If you want to build a project based on Pysim, you need to create a new `project
 The module should look like the following:
 
 ```python
-# project/myModule.py
+# project/host.py
 
 from pysim.core.modules.baseModule import BaseModule
 from pysim.core.message import Message
@@ -198,6 +198,7 @@ In that file, you need to import the `Simulator` object which provides you two m
 
 - `register_module(module_instance, quantity)` registers your module creating a number of instances accordingly to the _quantity_ value (default 1). Note that when the quantity is more than 1, the created modules will be named adding a `-{value}` to their original name.
 Thus, if your module is named _my_module_ and you need 3 of it, they will be named as _my_module-0_, _my_module-1_ and _my_module-2_.
+**Note**: the new names are not available in the module constructor.
 - `run()` starts the simulator.
 
 The script should look like the following:
@@ -294,7 +295,7 @@ def main(param1, param2, param3):
 3. If you need to configure some parameters used by your module, just decorate its constructor with `@ex.capture` passing the parameters as arguments:
 
 ```python
-# myModule.py
+# host.py
 
 ...
 @ex.capture
