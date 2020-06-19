@@ -22,7 +22,7 @@ class Gate(BaseModule):
                 passenger = self.queue.pop(0)
                 self.hostess = passenger
 
-                delay = 10 * passenger.luggages
+                delay = self.checkin_luggage_time * passenger.luggages
                 self.log("Passenger {} with {} luggages served in {} seconds".format(passenger.name, passenger.luggages, delay))
                 self.schedule_at(Message(), delay)
             else:

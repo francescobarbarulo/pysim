@@ -10,12 +10,9 @@ class PassengerGenerator(BaseModule):
     @ex.capture
     def __init__(self, name, airport_gates):
         super(PassengerGenerator, self).__init__(name)
-        self.num_gates = airport_gates
-        self.counter = 0
+        self.id = 0
 
-        self.msg_counter = 0
-        self.min_queue = -1
-        self.best_gate = None
+        self.gates_status = {'gate-{}'.format(i): -1 for i in range(airport_gates)}
 
     def initialize(self):
         # Start the generation
@@ -23,43 +20,32 @@ class PassengerGenerator(BaseModule):
 
     def handle_message(self, msg):
         if msg.is_self_message():
-            # Generate a new passenger
-            self.reset()
+            # Reset gates status
+            self.gates_status.update({k: -1 for k in self.gates_status.keys()})
 
+            # Generate a new passenger
             self.log("New passenger generated")
-            for g in range(self.num_gates):
+            for g in self.gates_status.keys():
                 # Knowing which gate has less passengers in the queue
-                self.send(Message(), "gate-{}".format(g))
+                self.send(Message(), g)
 
         else:
             # Gates returned their queue length
-            if self.msg_counter < self.num_gates:
+            if -1 in list(self.gates_status.values()):
                 # still waiting for all lengths
                 self.log("{}: {}".format(msg.get_source(), msg.get_text()))
 
-                # update the best gate
-                if self.min_queue < 0:
-                    self.min_queue = int(msg.get_text())
-                    self.best_gate = msg.get_source()
-                else:
-                    if int(msg.get_text()) < self.min_queue:
-                        self.min_queue = int(msg.get_text())
-                        self.best_gate = msg.get_source()
+                # update the gates status
+                self.gates_status.update({msg.get_source(): int(msg.get_text())})
 
-                self.msg_counter += 1
-
-            if self.msg_counter >= self.num_gates:
+            if -1 not in list(self.gates_status.values()):
                 # All the lengths received: the passenger can be enqueued in the best gate
+                best_gate = min(self.gates_status, key=self.gates_status.get)
                 # The number of luggages are generated uniformly random
-                passenger = Passenger(self.counter, PRNG.intuniform(0, 3))
-                self.log("Passenger {} with {} luggages in {}".format(passenger.name, passenger.luggages, self.best_gate))
-                self.send(passenger, self.best_gate)
+                passenger = Passenger(self.id, PRNG.intuniform(0, 3))
+                self.log("Passenger {} with {} luggages in {}".format(passenger.name, passenger.luggages, best_gate))
+                self.send(passenger, best_gate)
 
-                self.counter += 1
+                self.id += 1
 
                 self.schedule_at(Message(), PRNG.exponential(1.5))
-
-    def reset(self):
-        self.min_queue = -1
-        self.best_gate = None
-        self.msg_counter = 0
