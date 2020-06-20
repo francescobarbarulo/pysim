@@ -1,6 +1,7 @@
 .idea/
 env/
 *.pyc
+__pycache__/
 results/
 pysim/examples/cran
 batch.py
