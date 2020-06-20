@@ -20,20 +20,19 @@ class Simulator(object):
         self._registered_modules = []
         self._environment = Environment()
 
-    def register_module(self, m, quantity=1):
-        if m.get_name() not in self._registered_modules:
-            self._registered_modules.append(m.get_name())
+    def register_module(self, mtype, name, quantity=1):
+        if name not in self._registered_modules:
+            self._registered_modules.append(name)
 
             if quantity == 1:
+                m = mtype(name)
                 self._environment.add_item(m)
             else:
                 for i in range(quantity):
-                    module_copy = deepcopy(m)
-                    module_copy.set_name("{}-{}".format(m.get_name(), i))
-                    self._environment.add_item(module_copy)
-                del m
+                    m = mtype('{}-{}'.format(name, i))
+                    self._environment.add_item(m)
         else:
-            logger.error("Duplicated module with same name {}".format(m.get_name()))
+            logger.error("Duplicated module with same name {}".format(name))
             exit(-1)
 
     def notify(self, e: Event):

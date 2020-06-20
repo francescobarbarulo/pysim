@@ -14,7 +14,7 @@ def config():
 def main(airport_gates):
     sim = Simulator()
 
-    sim.register_module(PassengerGenerator("PG"))
-    sim.register_module(Gate("gate"), airport_gates)
+    sim.register_module(PassengerGenerator, "PG")
+    sim.register_module(Gate, "gate", airport_gates)
 
     sim.run()

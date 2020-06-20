@@ -12,8 +12,8 @@ from pysim.core.simulator import Simulator
 def main():
     sim = Simulator()
 
-    sim.register_module(TicModule("tic"))
-    sim.register_module(TocModule("toc"))
+    sim.register_module(TicModule, 'tic')
+    sim.register_module(TocModule, 'toc')
 
     sim.run()
 

@@ -7,6 +7,6 @@ from pysim.core.modules.mobileModule import MobileModule
 def main():
     sim = Simulator()
 
-    sim.register_module(MobileModule("Forrest Gump"))
+    sim.register_module(MobileModule, 'Forrest Gump')
 
     sim.run()
