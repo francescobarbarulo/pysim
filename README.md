@@ -164,7 +164,7 @@ If you want to build a project based on Pysim, you need to create a new `project
 The module should look like the following:
 
 ```python
-# project/host.py
+# project/myModule.py
 
 from pysim.core.modules.baseModule import BaseModule
 from pysim.core.message import Message
@@ -193,12 +193,13 @@ class MyModule(BaseModule):
 
 ```
 
+If you want to define some member variables in your class module, like in this case, you need to define a constructor which **must** take the module name as argument.
+
 For creating a new simulation script you need to create a new file, for instance `project.py`, in the main directory.
 In that file, you need to import the `Simulator` object which provides you two main functions:
 
-- `register_module(module_instance, quantity)` registers your module creating a number of instances accordingly to the _quantity_ value (default 1). Note that when the quantity is more than 1, the created modules will be named adding a `-{value}` to their original name.
+- `register_module(module_type, module_name, quantity)` registers your module creating a number of instances accordingly to the _quantity_ value (default 1). Note that when the quantity is more than 1, the created modules will be named adding a `-{value}` to their original name.
 Thus, if your module is named _my_module_ and you need 3 of it, they will be named as _my_module-0_, _my_module-1_ and _my_module-2_.
-**Note**: the new names are not available in the module constructor.
 - `run()` starts the simulator.
 
 The script should look like the following:
@@ -219,7 +220,7 @@ def main():
     sim = Simulator()
 
     # register your module
-    sim.register_module(MyModule("my_module"))
+    sim.register_module(MyModule, "my_module")
 
     # run the simulator
     sim.run()
