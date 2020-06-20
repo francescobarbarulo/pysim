@@ -160,11 +160,23 @@ INFO - pysim - [sim_time][module_name] your log text
 
 ## Build your project
 
-If you want to build a project based on Pysim, you need to create a new `project` folder in the main directory in which you will put your modules.
-The module should look like the following:
+If you want to build a project based on Pysim, you need to create a new python module in the main directory in which you will put your modules and the _main_ code.
+
+The structure should resemble the following:
+```bash
+project
+├── __init__.py
+├── __main__.py
+└── modules
+    ├── __init__.py
+    └── myModule.py
+```
+This folder structure is already provided in the `template` folder, which can be used as starting point.
+
+The module class should look like the following:
 
 ```python
-# project/myModule.py
+# project/modules/myModule.py
 
 from pysim.core.modules.baseModule import BaseModule
 from pysim.core.message import Message
@@ -202,16 +214,16 @@ In that file, you need to import the `Simulator` object which provides you two m
 Thus, if your module is named _my_module_ and you need 3 of it, they will be named as _my_module-0_, _my_module-1_ and _my_module-2_.
 - `run()` starts the simulator.
 
-The script should look like the following:
+The _main_ should look like the following:
 
 ```python
-# project.py
+# project/__main__.py
 
 from pysim.core.experiment import ex
 from pysim.core.simulator import Simulator
 
 # import your own modules, for instance
-from project.myModule import MyModule
+from project.modules.myModule import MyModule
 
 
 @ex.automain
@@ -229,7 +241,7 @@ def main():
 
 Finally, let's launch the simulation by issuing:
 ```
-python project.py
+python -m project
 ```
 
 The outcome should look like:
@@ -252,7 +264,7 @@ _debug_ | enable or disable console logs | True
 
 You can set all this parameter by:
 ```bash
-python project.py with seed=0 sim_time_limit=20 warm_up_period=5 debug=False
+python -m project with seed=0 sim_time_limit=20 warm_up_period=5 debug=False
 ```
 
 Of course, the simulation will stop even if it has not reached the `sim_time_limit` in the case no more events are scheduled.
@@ -270,7 +282,7 @@ Some guidelines:
 1. Define a configuration before the _main_ function just defining a simple function decorated by the `@ex.config` which containes the _key-value_ experiment parameters. They can be of any type.
 
 ```python
-# project.py
+# __main__.py
 
 ...
 @ex.config
@@ -285,7 +297,7 @@ def config():
 If you need to use some configuration parameters just pass them as arguments:
 
 ```python
-# project.py
+# __main__.py
 
 ...
 @ex.automain
@@ -296,7 +308,7 @@ def main(param1, param2, param3):
 3. If you need to configure some parameters used by your module, just decorate its constructor with `@ex.capture` passing the parameters as arguments:
 
 ```python
-# host.py
+# project/myModule.py
 
 ...
 @ex.capture
