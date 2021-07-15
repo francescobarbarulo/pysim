@@ -4,7 +4,7 @@ from pysim.modules.baseModule import BaseModule
 
 class TicModule(BaseModule):
     def initialize(self) -> None:
-        msg: Message = Message("beep")
+        msg: Message = Message(text="beep")
         self.schedule_at(msg=msg)
         self.log(text="Send self message {}".format(msg.get_text()))
 
@@ -14,7 +14,7 @@ class TicModule(BaseModule):
         else:
             self.log(text="Received new message {} from {}".format(msg.get_text(), msg.get_source()))
 
-        message: Message = Message("hello")
+        message: Message = Message(text="hello")
         self.send(msg=message, dest="toc", delay=1)
         self.log(text="Send message {} to {}".format(message.get_text(), message.get_dest()))
 

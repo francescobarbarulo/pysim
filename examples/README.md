@@ -28,7 +28,8 @@ _Airport_ simulates the arrival of passengers at the terminal and their wait for
 The inter-arrival time between passengers is modeled by the exponential distribution (see [Random variates](https://github.com/francescobarbarulo/pysim#generating-random-variates)).
 When a passenger arrives it enqueues itself at the gate having the minimum queue length.
 The check-in time is determined by the number of luggages they have.
+The `sim_time_limit` parameter specifies one day of simulated time.
 
 ```bash
-python examples/airport/main.py
+python examples/airport/main.py with sim_time_limit=86400
 ```
