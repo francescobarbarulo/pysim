@@ -121,7 +121,7 @@ class MyModule(BaseModule):
     def initialize(self):
         # if you want the module to start you need to schedule a message
         # so that it will trigger the handle_message function
-        msg = Message(msg="hello")
+        msg = Message(text="hello")
         self.schedule_at(msg=msg, delay=0)
 
     def handle_message(self, msg: Message) -> None:
