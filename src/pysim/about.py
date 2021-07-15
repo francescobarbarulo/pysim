@@ -1,0 +1,7 @@
+__author__ = "Francesco Barbarulo"
+__email__ = "barbarulofrancesco@gmail.com"
+__license__ = "GNU"
+__summary__ = "Python event-driven simulator"
+__title__ = "pysim"
+__uri__ = "https://github.com/francescobarbarulo/pysim"
+__version__ = "0.0.1"

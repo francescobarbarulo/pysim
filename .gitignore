@@ -1,0 +1,6 @@
+.vscode
+env
+*.pyc
+*.egg-info
+__pycache__/
+results/
